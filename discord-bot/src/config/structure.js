@@ -133,9 +133,9 @@ export const SERVER_STRUCTURE = {
       position: 2,
       channels: [
         {
-          name: '📋-szerver-info',
+          name: '📋-mod-info',
           type: 'text',
-          topic: 'Primal Chaos szerver információk és beállítások'
+          topic: 'Primal Chaos mod információk és beállítások (ugyanazon a szerveren fut, mint a többi mod)'
         },
         {
           name: '💬-chaos-chat',
@@ -159,9 +159,9 @@ export const SERVER_STRUCTURE = {
       position: 3,
       channels: [
         {
-          name: '📋-szerver-info',
+          name: '📋-mod-info',
           type: 'text',
-          topic: 'Primal Descended szerver információk és beállítások'
+          topic: 'Primal Descended mod információk és beállítások (ugyanazon a szerveren fut, mint a többi mod)'
         },
         {
           name: '💬-descended-chat',
@@ -185,9 +185,9 @@ export const SERVER_STRUCTURE = {
       position: 4,
       channels: [
         {
-          name: '📋-szerver-info',
+          name: '📋-mod-info',
           type: 'text',
-          topic: 'Tides of Fortune szerver információk és beállítások'
+          topic: 'Tides of Fortune mod információk és beállítások'
         },
         {
           name: '💬-tides-chat',

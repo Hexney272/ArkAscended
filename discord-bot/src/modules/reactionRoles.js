@@ -74,7 +74,7 @@ export async function setupReactionRoles(guild, roles) {
 }
 
 /**
- * Szerver-specifikus rangok létrehozása
+ * Mod-specifikus rangok létrehozása (egy szerver, több mod fut rajta)
  * @param {Guild} guild - Discord Guild
  */
 async function createServerRoles(guild) {

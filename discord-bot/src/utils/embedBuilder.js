@@ -115,9 +115,9 @@ export class WildArkEmbed extends EmbedBuilder {
       .setTitle(`${EMOJIS.VIP} Válassz Rangot!`)
       .setDescription(
         `Kattints a reakciókra, hogy rangot kapj!\n\n` +
-        `🦖 **Primal Chaos** - Chaos szerver játékos\n` +
-        `🌊 **Primal Descended** - Descended szerver játékos\n` +
-        `⚔️ **Tides of Fortune** - Tides szerver játékos\n\n` +
+        `🦖 **Primal Chaos** - Primal Chaos mod kedvelője\n` +
+        `🌊 **Primal Descended** - Primal Descended mod kedvelője\n` +
+        `⚔️ **Tides of Fortune** - Tides of Fortune érdeklődő\n\n` +
         `🔔 **Értesítések** - Event és boss értesítések\n` +
         `📢 **Hírek** - Fontos hírek értesítései\n\n` +
         `💜 **A rangok automatikusan hozzáadódnak!**`

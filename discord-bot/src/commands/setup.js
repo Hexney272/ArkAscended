@@ -203,9 +203,9 @@ async function sendWelcomeSetup(guild) {
     const embed = new WildArkEmbed()
       .setTitle('👋 Üdvözöljük a WildArk közösségében!')
       .setDescription(
-        `🦖 **WildArk - ARK Ascended Szerverek**\n\n` +
+        `🦖 **WildArk - ARK: Survival Ascended Szerver**\n\n` +
         `Üdvözlünk a hivatalos WildArk Discord szerveren!\n\n` +
-        `Itt találsz minden információt a szerverjeinkről:\n` +
+        `Egy szerveren játszunk (Ragnarok, PvE x50), amin ezek a modok futnak:\n` +
         `• 🦖 **Primal Chaos**\n` +
         `• 🌊 **Primal Descended**\n` +
         `• ⚔️ **Tides of Fortune**\n\n` +

@@ -1,7 +1,12 @@
 /**
  * Server Monitor Module
- * ARK: Survival Ascended szerverek élő státuszának lekérdezése
+ * Az ARK: Survival Ascended szerver élő státuszának lekérdezése
  * és megjelenítése egy folyamatosan frissülő Discord embedben.
+ *
+ * FONTOS: Egyetlen szerver van! A "Primal Chaos" és "Primal
+ * Descended" nem külön szerverek, hanem MODOK, amik együtt futnak
+ * ugyanazon a szerveren (lásd SZERVER_INFO.md / MOD_ID_LISTA.md:
+ * Ark Primal Chaos ID 932714, Ark Descended ID 952367).
  *
  * FONTOS KORLÁT: ASA a lekérdezéshez az Epic Online Services (EOS)
  * protokollt használja, NEM a régi Source/Valve A2S-t. Az EOS
@@ -18,48 +23,34 @@ import { GameDig } from 'gamedig';
 import { WildArkEmbed } from '../utils/embedBuilder.js';
 import logger from '../utils/logger.js';
 
-/**
- * Figyelt szerverek listája. A host/port a .env-ből jön - ha egy
- * szerverhez nincs host megadva, "ismeretlen" státusszal jelezzük,
- * de a bot nem áll el a többi szervertől.
- */
-function getMonitoredServers() {
-  return [
-    {
-      key: 'chaos',
-      label: '🦖 Primal Chaos',
-      host: process.env.CHAOS_SERVER_HOST || '',
-      port: parseInt(process.env.CHAOS_SERVER_QUERY_PORT || '27015', 10),
-    },
-    {
-      key: 'descended',
-      label: '🌊 Primal Descended',
-      host: process.env.DESCENDED_SERVER_HOST || '',
-      port: parseInt(process.env.DESCENDED_SERVER_QUERY_PORT || '27015', 10),
-    },
-    {
-      key: 'tides',
-      label: '⚔️ Tides of Fortune',
-      host: process.env.TIDES_SERVER_HOST || '',
-      port: parseInt(process.env.TIDES_SERVER_QUERY_PORT || '27015', 10),
-    },
-  ];
-}
-
 // Az élő státusz embed üzenet-referenciája (frissítéshez kell)
 let statusMessage = null;
 let refreshInterval = null;
 
 /**
- * Egyetlen szerver lekérdezése. Sosem dob hibát kifelé - ha a
- * lekérdezés elhasal (szerver offline, hibás host/port, timeout),
- * "offline" státusszal tér vissza, hogy a többi szerver lekérdezése
- * ne akadjon el miatta.
+ * A szerver kapcsolati adatai a .env-ből.
+ * Ha nincs megadva host, a bot "ismeretlen" státusszal jelzi,
+ * de nem áll el - csak a monitor funkciót hagyja ki.
+ */
+function getServerConfig() {
+  return {
+    label: '🦖🌊 WildArk Szerver',
+    subtitle: 'Primal Chaos + Primal Descended mod',
+    host: process.env.ARK_SERVER_HOST || '',
+    port: parseInt(process.env.ARK_SERVER_QUERY_PORT || '27015', 10),
+  };
+}
+
+/**
+ * A szerver lekérdezése. Sosem dob hibát kifelé - ha a lekérdezés
+ * elhasal (szerver offline, hibás host/port, timeout), "offline"
+ * státusszal tér vissza.
  *
- * @param {{key: string, label: string, host: string, port: number}} server
  * @returns {Promise<object>} - Normalizált státusz objektum
  */
-async function queryServer(server) {
+async function queryServer() {
+  const server = getServerConfig();
+
   if (!server.host) {
     return {
       ...server,
@@ -89,7 +80,7 @@ async function queryServer(server) {
       map: state.map || null,
     };
   } catch (error) {
-    logger.warn(`⚠️ Nem sikerült lekérdezni: ${server.label} (${server.host}:${server.port}) - ${error.message}`);
+    logger.warn(`⚠️ Nem sikerült lekérdezni a szervert (${server.host}:${server.port}) - ${error.message}`);
     return {
       ...server,
       status: 'offline',
@@ -102,22 +93,13 @@ async function queryServer(server) {
 }
 
 /**
- * Minden figyelt szerver lekérdezése párhuzamosan.
- * @returns {Promise<object[]>}
- */
-export async function queryAllServers() {
-  const servers = getMonitoredServers();
-  return Promise.all(servers.map(queryServer));
-}
-
-/**
- * Egy sor szöveg összeállítása egy szerver eredményéből.
+ * Szöveg összeállítása a lekérdezés eredményéből.
  * @param {object} result
  * @returns {string}
  */
 function formatServerLine(result) {
   if (result.status === 'unknown') {
-    return `${result.label}\n⚪ Nincs beállítva (hiányzó host a .env-ben)`;
+    return `${result.label}\n⚪ Nincs beállítva (hiányzó ARK_SERVER_HOST a .env-ben)`;
   }
 
   if (!result.online) {
@@ -130,19 +112,19 @@ function formatServerLine(result) {
 
   const mapLine = result.map ? `\n🗺️ Térkép: ${result.map}` : '';
 
-  return `${result.label}\n🟢 Online — 👥 ${playerCount} játékos${mapLine}`;
+  return `${result.label} (${result.subtitle})\n🟢 Online — 👥 ${playerCount} játékos${mapLine}`;
 }
 
 /**
- * Státusz embed felépítése a lekérdezési eredményekből.
- * @param {object[]} results
+ * Státusz embed felépítése a lekérdezés eredményéből.
+ * @param {object} result
  * @returns {WildArkEmbed}
  */
-function buildStatusEmbed(results) {
+function buildStatusEmbed(result) {
   const embed = new WildArkEmbed()
     .setTitle('📊 WildArk Szerver Státusz')
     .setDescription(
-      results.map(formatServerLine).join('\n\n') +
+      formatServerLine(result) +
       `\n\n_Utolsó frissítés: <t:${Math.floor(Date.now() / 1000)}:R>_` +
       `\n\n⚠️ *Játékosnevek listája technikai okból nem elérhető ` +
       `(ARK: Survival Ascended nem ad vissza név-listát).*`
@@ -169,8 +151,8 @@ export async function setupServerMonitor(guild) {
       return false;
     }
 
-    const results = await queryAllServers();
-    const embed = buildStatusEmbed(results);
+    const result = await queryServer();
+    const embed = buildStatusEmbed(result);
 
     // Keressünk egy már létező státusz-üzenetet a botunktól, hogy
     // ne duplikáljunk /setup újrafuttatásakor
@@ -188,7 +170,7 @@ export async function setupServerMonitor(guild) {
       logger.success('✅ Szerver státusz panel létrehozva.');
     }
 
-    startAutoRefresh(guild);
+    startAutoRefresh();
     return statusMessage;
 
   } catch (error) {
@@ -200,10 +182,8 @@ export async function setupServerMonitor(guild) {
 /**
  * Periodikus frissítés indítása (setInterval). Ha már fut egy
  * korábbi timer, előbb leállítjuk, hogy ne halmozódjanak.
- *
- * @param {Guild} guild - Discord Guild
  */
-function startAutoRefresh(guild) {
+function startAutoRefresh() {
   if (refreshInterval) {
     clearInterval(refreshInterval);
   }
@@ -215,8 +195,8 @@ function startAutoRefresh(guild) {
     if (!statusMessage) return;
 
     try {
-      const results = await queryAllServers();
-      const embed = buildStatusEmbed(results);
+      const result = await queryServer();
+      const embed = buildStatusEmbed(result);
       await statusMessage.edit({ embeds: [embed] });
     } catch (error) {
       logger.error('Hiba az automatikus státusz frissítés során:', error);
@@ -232,12 +212,11 @@ function startAutoRefresh(guild) {
  * @returns {Promise<WildArkEmbed>}
  */
 export async function getServerStatusEmbed() {
-  const results = await queryAllServers();
-  return buildStatusEmbed(results);
+  const result = await queryServer();
+  return buildStatusEmbed(result);
 }
 
 export default {
   setupServerMonitor,
-  queryAllServers,
   getServerStatusEmbed,
 };
