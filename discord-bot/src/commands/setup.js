@@ -11,6 +11,7 @@ import { setupPermissions } from '../modules/permissionBuilder.js';
 import { setupReactionRoles } from '../modules/reactionRoles.js';
 import { setupTicketSystem } from '../modules/ticketSystem.js';
 import { setupLanguageSelector } from '../modules/languageSystem.js';
+import { setupServerMonitor } from '../modules/serverMonitor.js';
 import { WildArkEmbed } from '../utils/embedBuilder.js';
 import { panelExists } from '../utils/panelGuard.js';
 import logger from '../utils/logger.js';
@@ -27,7 +28,7 @@ export const setupCommand = {
       await interaction.deferReply();
 
       const guild = interaction.guild;
-      const totalSteps = 10;
+      const totalSteps = 11;
       let currentStep = 0;
 
       logger.bot('🚀 WildArk szerver telepítés indítása...');
@@ -96,6 +97,14 @@ export const setupCommand = {
       await setupTicketSystem(guild, roles);
       await delay(1000);
 
+      // Step 8.5: Szerver státusz monitor beállítása
+      currentStep++;
+      await interaction.editReply({
+        embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '📊 Szerver státusz monitor beállítása...')]
+      });
+      await setupServerMonitor(guild);
+      await delay(1000);
+
       // Step 9: Welcome üzenet
       currentStep++;
       await interaction.editReply({
@@ -122,6 +131,7 @@ export const setupCommand = {
         `✅ Reaction Roles aktív\n` +
         `✅ Nyelvválasztó aktív (🇭🇺/🇬🇧)\n` +
         `✅ Ticket rendszer aktív\n` +
+        `✅ Szerver státusz monitor aktív\n` +
         `✅ AutoMod aktív\n` +
         `✅ Welcome rendszer aktív\n\n` +
         `🦖 **A WildArk szerver használatra kész!**\n\n` +

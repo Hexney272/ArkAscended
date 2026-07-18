@@ -9,6 +9,7 @@ import logger from './utils/logger.js';
 import { setupCommand } from './commands/setup.js';
 import { ticketCommands } from './commands/ticket.js';
 import { adminCommands } from './commands/admin.js';
+import { serverStatusCommands } from './commands/serverstatus.js';
 
 // Környezeti változók betöltése
 config();
@@ -33,6 +34,7 @@ const commands = [
   setupCommand,
   ...ticketCommands,
   ...adminCommands,
+  ...serverStatusCommands,
 ];
 
 commands.forEach(command => {

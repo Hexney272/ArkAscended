@@ -259,8 +259,20 @@ export const SERVER_STRUCTURE = {
       ]
     },
     {
-      name: '📫 SUPPORT',
+      name: '📊 SZERVER STÁTUSZ',
       position: 7,
+      channels: [
+        {
+          name: '📊-szerver-státusz',
+          type: 'text',
+          topic: 'Élő szerver státusz - online/offline, játékosszám',
+          permissions: { everyone: { SendMessages: false } }
+        },
+      ]
+    },
+    {
+      name: '📫 SUPPORT',
+      position: 8,
       channels: [
         {
           name: '📫-ticket-központ',
@@ -278,7 +290,7 @@ export const SERVER_STRUCTURE = {
     },
     {
       name: '🎤 VOICE CHANNELS',
-      position: 8,
+      position: 9,
       channels: [
         {
           name: '🎤 Általános Voice',
@@ -314,7 +326,7 @@ export const SERVER_STRUCTURE = {
     },
     {
       name: '🔒 STAFF',
-      position: 9,
+      position: 10,
       channels: [
         {
           name: '👑-admin-chat',
