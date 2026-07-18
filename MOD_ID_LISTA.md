@@ -1,93 +1,102 @@
 # ARK Ascended Mod ID Lista - Nitrado Telepítéshez
 
-## 📋 CurseForge Mod ID-k Telepítési Sorrendben
+## 📋 Jelenlegi Szerveren Lévő Modok (32 db)
 
-**FONTOS:** Ezeket a Project ID számokat vagy a mod nevét használd a Nitrado Control Panel "Mods" menüpontban.
+**SZERVER ÁLLAPOT:** ✅ Ezek a modok JELENLEG TELEPÍTVE VANNAK a szerveren!
 
----
-
-## ✅ 1. Alapvető Modok (Telepítsd ELSŐKÉNT)
-
-| # | Mod Név | CurseForge Project ID | Keresési Név |
-|---|---------|----------------------|--------------|
-| 1 | GameServerApp.com Integration (Crossplay) | *Keress rá név szerint* | "GameServerApp" |
-| 2 | EOS ID Helper (CrossPlay) | *Keress rá név szerint* | "EOS ID Helper" |
-| 3 | WBUI2 | **931119** | "WBUI2" |
+### 🔢 Mod ID-k Sorrendben (Szerveren):
+```
+940975, 947033, 935408, 950914, 952367, 1039294, 932714, 931762, 
+951574, 924900, 959740, 939055, 928621, 932975, 930494, 936660, 
+946694, 928793, 1342708, 980463, 1122696, 930442, 947733, 929334, 
+936882, 968618, 931119, 941450, 933099, 933447, 928597, 1153016
+```
 
 ---
 
-## 🦖 2. DLC Spawn Mod (Opcionális - AJÁNLOTT)
+## ✅ 1. Alapvető Modok
 
-| # | Mod Név | CurseForge Project ID | Keresési Név |
-|---|---------|----------------------|--------------|
-| 3.5 | DLC Spawns | *Keress rá név szerint* | "DLC Spawns" |
-
----
-
-## 🔧 3. Játékmenet Modok
-
-| # | Mod Név | CurseForge Project ID | Keresési Név |
-|---|---------|----------------------|--------------|
-| 4 | **Ark Primal Chaos** | **932714** | "Ark Primal Chaos" |
-| 5 | **Ark Descended** | **952367** | "Ark Descended" |
-| 6 | Seed Farm: Grow Everything | *Keress rá név szerint* | "Seed Farm" |
-| 7 | ASA-Bot Companion | *Keress rá név szerint* | "ASA-Bot" |
-| 8 | ARKomatic | *Keress rá név szerint* | "ARKomatic" |
-| 9 | Automated Ark | *Keress rá név szerint* | "Automated Ark" |
-| 10 | Automated Dino Wipes | *Keress rá név szerint* | "Automated Dino Wipes" |
+| # | Mod Név | CurseForge ID | Szerveren |
+|---|---------|---------------|-----------|
+| 1 | GameServerApp.com Integration (Crossplay) | **940975** | ✅ |
+| 2 | EOS ID Helper (CrossPlay) | **928597** | ✅ |
+| 3 | WBUI2 | **931119** | ✅ |
 
 ---
 
-## 🏗️ 4. Építkezési és Tárolási Modok
+## 🔧 2. Játékmenet Modok (Overhaul)
 
-| # | Mod Név | CurseForge Project ID | Keresési Név |
-|---|---------|----------------------|--------------|
-| 11 | Cybers Structures QoL+ (Crossplay) | *Keress rá név szerint* | "Cybers Structures" |
-| 12 | Ark Descended Structures | *Keress rá név szerint* | "Ark Descended Structures" |
-| 13 | Klinger Additional Rustic Building | *Keress rá név szerint* | "Klinger Rustic" |
-| 14 | Dwarven Builders Custom Cosmetic Mod | *Keress rá név szerint* | "Dwarven Builders" |
-| 15 | Pelayori's Cryo Storage (Crossplay!) | *Keress rá név szerint* | "Pelayori Cryo" |
-| 16 | Super Cryo Storage | *Keress rá név szerint* | "Super Cryo Storage" |
-| 17 | Alfa Oceanic Platforms | *Keress rá név szerint* | "Alfa Oceanic" |
-
----
-
-## 🛠️ 5. Eszközök és Kiegészítők
-
-| # | Mod Név | CurseForge Project ID | Keresési Név |
-|---|---------|----------------------|--------------|
-| 18 | Utilities Plus | *Keress rá név szerint* | "Utilities Plus" |
-| 19 | **Awesome Spyglass!** | *Lásd alább* | "Awesome Spyglass" |
-| 20 | Upgrade Station | *Keress rá név szerint* | "Upgrade Station" |
-| 21 | Awesome Teleporters! | *Keress rá név szerint* | "Awesome Teleporters" |
-| 22 | Awesome ARK Tools | *Keress rá név szerint* | "Awesome ARK Tools" |
-| 23 | Ultimate Tranqs | *Keress rá név szerint* | "Ultimate Tranqs" |
-| 24 | Better Rafts | *Keress rá név szerint* | "Better Rafts" |
-| 25 | Der Dino Finder | *Keress rá név szerint* | "Der Dino Finder" |
+| # | Mod Név | CurseForge ID | Szerveren |
+|---|---------|---------------|-----------|
+| 4 | **Ark Primal Chaos** | **932714** | ✅ |
+| 5 | **Ark Descended** | **952367** | ✅ |
+| 6 | Seed Farm: Grow Everything | **947033** | ✅ |
+| 7 | ASA-Bot Companion | **935408** | ✅ |
+| 8 | ARKomatic | **950914** | ✅ |
+| 9 | Automated Ark | **1039294** | ✅ |
+| 10 | Automated Dino Wipes | **931762** | ✅ |
 
 ---
 
-## 🎨 6. Kozmetikai Modok
+## 🏗️ 3. Építkezési és Tárolási Modok
 
-| # | Mod Név | CurseForge Project ID | Keresési Név |
-|---|---------|----------------------|--------------|
-| 26 | MarniiMods Hairstyles | *Keress rá név szerint* | "MarniiMods" |
-| 27 | Dino Painter | *Keress rá név szerint* | "Dino Painter" |
-| 28 | Lights Skins | *Keress rá név szerint* | "Lights Skins" |
+| # | Mod Név | CurseForge ID | Szerveren |
+|---|---------|---------------|-----------|
+| 11 | Cybers Structures QoL+ (Crossplay) | **951574** | ✅ |
+| 12 | Ark Descended Structures | **924900** | ✅ |
+| 13 | Klinger Additional Rustic Building | **959740** | ✅ |
+| 14 | Dwarven Builders Mod | **939055** | ✅ |
+| 15 | Pelayori's Cryo Storage (Crossplay!) | **928621** | ✅ |
+| 16 | Super Cryo Storage | **932975** | ✅ |
+| 17 | Alfa Oceanic Platforms | **930494** | ✅ |
 
 ---
 
-## ⚙️ 7. Speciális Funkciók
+## 🛠️ 4. Eszközök és Kiegészítők
 
-| # | Mod Név | CurseForge Project ID | Keresési Név |
-|---|---------|----------------------|--------------|
-| 29 | Crazy's Crazy Ascended Potions | *Keress rá név szerint* | "Crazy Ascended Potions" |
-| 30 | Resonant's Shop Mod | *Keress rá név szerint* | "Resonant Shop" |
-| 31 | Spawn Blocker | *Keress rá név szerint* | "Spawn Blocker" |
-| 32 | New Dino Cloner | *Keress rá név szerint* | "New Dino Cloner" |
-| 33 | Inventory Backup Saver | *Keress rá név szerint* | "Inventory Backup" |
-| 34 | SmartTurrets | *Keress rá név szerint* | "SmartTurrets" |
-| 35 | FPS Boost Buttons (PauseMenu) | *Keress rá név szerint* | "FPS Boost Buttons" |
+| # | Mod Név | CurseForge ID | Szerveren |
+|---|---------|---------------|-----------|
+| 18 | Utilities Plus | **936660** | ✅ |
+| 19 | Awesome Spyglass! | **946694** | ✅ |
+| 20 | Upgrade Station | **928793** | ✅ |
+| 21 | Awesome Teleporters! | **1342708** | ✅ |
+| 22 | Awesome ARK Tools | **980463** | ✅ |
+| 23 | Ultimate Tranqs | **1122696** | ✅ |
+| 24 | Better Rafts | **930442** | ✅ |
+| 25 | Der Dino Finder | **947733** | ✅ |
+
+---
+
+## 🎨 5. Kozmetikai Modok
+
+| # | Mod Név | CurseForge ID | Szerveren |
+|---|---------|---------------|-----------|
+| 26 | MarniiMods Hairstyles | **929334** | ✅ |
+| 27 | Dino Painter | **936882** | ✅ |
+| 28 | Lights Skins | **968618** | ✅ |
+
+---
+
+## ⚙️ 6. Speciális Funkciók
+
+| # | Mod Név | CurseForge ID | Szerveren |
+|---|---------|---------------|-----------|
+| 29 | Crazy's Crazy Ascended Potions | **941450** | ✅ |
+| 30 | Resonant's Shop Mod | **933099** | ✅ |
+| 31 | Spawn Blocker | **933447** | ✅ |
+| 32 | Inventory Backup Saver | **1153016** | ✅ |
+
+---
+
+## ❌ Hiányzó Modok az Eredeti Listából
+
+Ezek a modok szerepeltek az eredeti listában, de **NINCSENEK** a szerveren:
+
+| Mod Név | Státusz | Javaslat |
+|---------|---------|----------|
+| New Dino Cloner | ❌ Nincs telepítve | Telepítsd, ha szükséges |
+| SmartTurrets | ❌ Nincs telepítve | Telepítsd, ha szükséges |
+| FPS Boost Buttons (PauseMenu) | ❌ Nincs telepítve | Telepítsd, ha szükséges |
 
 ---
 
@@ -116,15 +125,86 @@ Project ID: 931119 (az oldal alján található)
 
 ---
 
-## 📝 Megerősített Project ID-k
+## 📝 Teljes Mod Lista Magyarázatokkal
 
-Ezek az ID-k **100%-ban megerősítettek** a keresési eredményekből:
+### 🔥 Kritikus Modok (Overhaul):
 
-| Mod Név | Project ID | Forrás |
-|---------|------------|--------|
-| **WBUI2** | **931119** | CurseForge hivatalos oldal |
-| **Ark Primal Chaos** | **932714** | CurseForge hivatalos oldal |
-| **Ark Descended** | **952367** | CurseForge hivatalos oldal |
+**Ark Primal Chaos (932714)**
+- Tiered progression rendszer
+- Inspiráció: Ark Supreme, Primal Fear
+- Új tier-ek minden területen
+- ⚠️ Jelentős gameplay változtatások
+
+**Ark Descended (952367)**
+- Creature rebalancing mod
+- Dinók sokkal erősebbek mint vanilla
+- ⚠️ NE keverd vanilla dinókkal!
+- Designed by EmptyDream
+
+### 📦 Tárolási Modok:
+
+| Mod | ID | Leírás |
+|-----|-----|--------|
+| Pelayori's Cryo Storage | 928621 | Cryo tárolási rendszer |
+| Super Cryo Storage | 932975 | Bővített cryo funkciók |
+
+### 🏗️ Építési Modok:
+
+| Mod | ID | Leírás |
+|-----|-----|--------|
+| Cybers Structures QoL+ | 951574 | QoL építési javítások |
+| Ark Descended Structures | 924900 | Extra struktúrák |
+| Klinger Rustic Building | 959740 | Rustic stílus |
+| Dwarven Builders | 939055 | Dwarven stílus |
+| Alfa Oceanic Platforms | 930494 | Vízi platformok |
+
+### 🔧 Automatizációs Modok:
+
+| Mod | ID | Leírás |
+|-----|-----|--------|
+| ARKomatic | 950914 | Automatizálási rendszer |
+| Automated Ark | 1039294 | További automatizáció |
+| Automated Dino Wipes | 931762 | Auto dino tisztítás |
+
+### 🛠️ Utility Modok:
+
+| Mod | ID | Leírás |
+|-----|-----|--------|
+| Awesome Spyglass! | 946694 | Fejlett távcsöves info |
+| Awesome Teleporters! | 1342708 | Teleportálási rendszer |
+| Awesome ARK Tools | 980463 | Hasznos eszközök |
+| Utilities Plus | 936660 | Extra utilities |
+| Upgrade Station | 928793 | Eszköz fejlesztés |
+| Ultimate Tranqs | 1122696 | Erős altatók |
+| Der Dino Finder | 947733 | Dino kereső eszköz |
+
+### 🦖 Dino/Farm Modok:
+
+| Mod | ID | Leírás |
+|-----|-----|--------|
+| Seed Farm: Grow Everything | 947033 | Univerzális farmolás |
+| ASA-Bot Companion | 935408 | Bot segítő |
+| Dino Painter | 936882 | Dino festés |
+
+### 🎨 UI/Kozmetikai Modok:
+
+| Mod | ID | Leírás |
+|-----|-----|--------|
+| WBUI2 | 931119 | Szerver UI információk |
+| MarniiMods Hairstyles | 929334 | Extra frizurák |
+| Lights Skins | 968618 | Világítás kinézetek |
+
+### ⚙️ Egyéb Funkciók:
+
+| Mod | ID | Leírás |
+|-----|-----|--------|
+| GameServerApp.com Integration | 940975 | Crossplay támogatás |
+| EOS ID Helper | 928597 | Crossplay ID kezelés |
+| Crazy's Crazy Ascended Potions | 941450 | Fejlett főzetek |
+| Resonant's Shop Mod | 933099 | Bolt rendszer |
+| Spawn Blocker | 933447 | Spawn kontroll |
+| Inventory Backup Saver | 1153016 | Inventory védelem |
+| Better Rafts | 930442 | Fejlesztett tutajok |
 
 ---
 
@@ -235,8 +315,34 @@ Ha egy mod nem található a Nitrado-n:
 
 ---
 
+## 🎯 Gyors Másolható Lista
+
+Ha szeretnéd újratelepíteni vagy másik szerverre másolni:
+
+```
+940975,947033,935408,950914,952367,1039294,932714,931762,951574,924900,959740,939055,928621,932975,930494,936660,946694,928793,1342708,980463,1122696,930442,947733,929334,936882,968618,931119,941450,933099,933447,928597,1153016
+```
+
+**Mod Számláló:** 32 mod telepítve
+
+---
+
+## 📊 Statisztikák
+
+- ✅ **Telepített modok:** 32 db
+- 🔥 **Overhaul modok:** 2 (Primal Chaos, Descended)
+- 🏗️ **Építési modok:** 5
+- 🛠️ **Utility modok:** 7
+- 📦 **Tárolási modok:** 2
+- 🎨 **Kozmetikai modok:** 3
+- ⚙️ **Automatizációs modok:** 3
+- 🦖 **Gameplay modok:** 10+
+
+---
+
 **Utolsó frissítés:** 2026-07-18  
-**Verzió:** 1.1  
-**ARK Verzió:** Survival Ascended
+**Verzió:** 2.0 - AKTUÁLIS SZERVER KONFIGURÁCIÓ  
+**ARK Verzió:** Survival Ascended  
+**Szerver:** Nitrado
 
 **Jó játékot! 🦖🎮**
