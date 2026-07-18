@@ -107,14 +107,27 @@ async function applyVisibility(category, visibility, guild, roles, huRole, enRol
   // OAuth meghívási jogaitól (Administrator vagy nem) függetlenül
   // biztosítja, hogy a /setup panel-küldő lépései sose akadjanak el
   // egy olyan kategóriánál, amit a bot saját magától elrejtett volna.
-  if (guild.members.me) {
-    await category.permissionOverwrites.create(guild.members.me, {
-      ViewChannel: true,
-      SendMessages: true,
-      ReadMessageHistory: true,
-      ManageMessages: true,
-      AddReactions: true,
-    });
+  //
+  // FONTOS JAVÍTÁS: ez korábban a try/catch-en KÍVÜL volt. Ha ez a
+  // hívás elhasalt (pl. rate limit ~140+ permission-hívásnál 20
+  // kategórián keresztül), a hiba feldobódott a /setup parancsig és
+  // MEGSZAKÍTOTTA A TELJES TELEPÍTÉST, mielőtt elért volna a
+  // szabályzat/reaction roles/nyelvválasztó/ticket panel-küldő
+  // lépésekig - ez magyarázta, hogy minden panel hiányzott egyszerre.
+  try {
+    if (guild.members.me) {
+      await category.permissionOverwrites.create(guild.members.me, {
+        ViewChannel: true,
+        SendMessages: true,
+        ReadMessageHistory: true,
+        ManageMessages: true,
+        AddReactions: true,
+      });
+    }
+  } catch (botPermError) {
+    logger.error(`Hiba a bot saját jogosultságának beállításakor (${category.name}):`, botPermError);
+    // Nem dobjuk tovább - a kategória létrehozása/láthatósága
+    // folytatódjon, még ha a bot saját explicit joga nem sikerült.
   }
 
   try {

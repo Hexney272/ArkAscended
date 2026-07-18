@@ -65,12 +65,19 @@ export const setupCommand = {
       await setupPermissions(guild, roles);
       await delay(1000);
 
+      // Step 5-9: Panel-küldő lépések. FONTOS: mindegyik egyedi
+      // try/catch-be csomagolva, hogy EGY lépés hibája (pl. rate
+      // limit, hiányzó csatorna) NE akassza meg a többi panel
+      // kiküldését. Korábban egyetlen hiba (a bot saját jogának
+      // beállítása a categoryBuilder.js-ben) az EGÉSZ /setup-ot
+      // megszakította, ezért hiányzott minden panel egyszerre.
+
       // Step 5: Szabályzat küldése
       currentStep++;
       await interaction.editReply({
         embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '📜 Szabályzat létrehozása...')]
       });
-      await sendRules(guild);
+      await runStepSafely('Szabályzat', () => sendRules(guild));
       await delay(1000);
 
       // Step 6: Reaction Roles beállítása
@@ -78,7 +85,7 @@ export const setupCommand = {
       await interaction.editReply({
         embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '🎭 Reaction Roles beállítása...')]
       });
-      await setupReactionRoles(guild, roles);
+      await runStepSafely('Reaction Roles', () => setupReactionRoles(guild, roles));
       await delay(1000);
 
       // Step 7: Nyelvválasztó beállítása
@@ -86,7 +93,7 @@ export const setupCommand = {
       await interaction.editReply({
         embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '🌐 Nyelvválasztó beállítása...')]
       });
-      await sendLanguageSetup(guild);
+      await runStepSafely('Nyelvválasztó', () => sendLanguageSetup(guild));
       await delay(1000);
 
       // Step 8: Ticket rendszer beállítása
@@ -94,7 +101,7 @@ export const setupCommand = {
       await interaction.editReply({
         embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '🎫 Ticket rendszer beállítása...')]
       });
-      await setupTicketSystem(guild, roles);
+      await runStepSafely('Ticket rendszer', () => setupTicketSystem(guild, roles));
       await delay(1000);
 
       // Step 8.5: Szerver státusz monitor beállítása
@@ -102,7 +109,7 @@ export const setupCommand = {
       await interaction.editReply({
         embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '📊 Szerver státusz monitor beállítása...')]
       });
-      await setupServerMonitor(guild);
+      await runStepSafely('Szerver státusz monitor', () => setupServerMonitor(guild));
       await delay(1000);
 
       // Step 9: Welcome üzenet
@@ -110,7 +117,7 @@ export const setupCommand = {
       await interaction.editReply({
         embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '👋 Welcome rendszer beállítása...')]
       });
-      await sendWelcomeSetup(guild);
+      await runStepSafely('Welcome rendszer', () => sendWelcomeSetup(guild));
       await delay(1000);
 
       // Step 10: Befejezés
@@ -241,6 +248,23 @@ async function sendWelcomeSetup(guild) {
 
   await welcomeChannel.send({ embeds: [embed] });
   logger.success('✅ Welcome üzenet elküldve');
+}
+
+/**
+ * Egy setup-lépés biztonságos, hibatűrő futtatása. Ha a lépés
+ * hibát dob, azt logoljuk és FOLYTATJUK a következő lépéssel -
+ * nem hagyjuk, hogy egyetlen hiba (pl. rate limit egy csatornánál)
+ * megakassza az összes utána következő panel kiküldését.
+ *
+ * @param {string} stepName - A lépés neve a log-üzenethez
+ * @param {() => Promise<any>} fn - A futtatandó async függvény
+ */
+async function runStepSafely(stepName, fn) {
+  try {
+    await fn();
+  } catch (error) {
+    logger.error(`❌ Hiba a "${stepName}" lépésnél (a setup folytatódik a következő lépéssel):`, error);
+  }
 }
 
 /**
