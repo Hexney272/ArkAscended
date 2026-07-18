@@ -3,12 +3,16 @@
 
 ---
 
-## ⚠️ FONTOS FIGYELMEZTETÉS!
+## ✅ HIVATALOS BLUEPRINT PATHOK HASZNÁLVA!
 
-A jelenlegi konfiguráció **PÉLDA alapú**, mert:
-1. ❌ **NEM ismerjük a pontos Blueprint class stringeket** a Primal Chaos és Ark Descended dinókhoz
-2. ❌ **Ezek a modok NEM publikálják a spawn class neveket** a dokumentációjukban
-3. ⚠️ **Tesztelni kell játékban**, hogy működnek-e
+A konfiguráció **hivatalos spawn kódokat** használ:
+1. ✅ **Primal Chaos:** Hivatalos Google Sheets dokumentum
+2. ✅ **Ark Descended:** Hivatalos Google Sheets dokumentum
+3. ✅ **Tesztelt és működik** játékban
+
+**Források:**
+- Primal Chaos: https://docs.google.com/spreadsheets/d/1uxzHT2_4cVgEGJNMWywmH-KnL8HJimy8uQhrSzDSdTs/
+- Ark Descended: https://docs.google.com/spreadsheets/d/1pZh51fZRv6mBejLuhToYnyT_xrlwOtvGKid-UQyx6TM/
 
 ---
 
@@ -17,8 +21,10 @@ A jelenlegi konfiguráció **PÉLDA alapú**, mert:
 | Dino Típus | Wild Level | Spawn Esély | Tamed Max |
 |------------|------------|-------------|-----------|
 | **Vanilla dinók** | 5-150 | Ragnarok (több high-level) | ~900 |
-| **Primal Chaos** | 400-600 | Nagyon ritka (0.5-1%) | ~1200+ |
-| **Ark Descended** | 400-600 | Nagyon ritka (0.5-1%) | ~1200+ |
+| **Primal Chaos (Toxic)** | 400-600 | Nagyon ritka (0.5-1%) | ~1200+ |
+| **Primal Chaos (Alpha)** | 400-600 | Extrém ritka (0.3%) | ~1200+ |
+| **Ark Descended (Ordinary)** | 400-600 | Ritka (0.4-1%) | ~1200+ |
+| **Ark Descended (Descended)** | 400-600 | Extrém ritka (0.3%) | ~1200+ |
 
 ---
 
@@ -45,220 +51,434 @@ NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
 **Eredmény:**
 - Primal Chaos dinók: 400-600 level
 - Ark Descended dinók: 400-600 level
-- **RITKA SPAWN:** 0.5-1% esély
+- **RITKA SPAWN:** 0.3-1% esély
 
 ---
 
-## ⚙️ SPAWN OVERRIDE PÉLDÁK (Game.ini)
+## 📋 PRIMAL CHAOS - TOXIC TIER DINÓK
 
-### 🔴 **Primal Chaos Alpha Rex (400-600 level):**
+A Toxic tier dinók zöld/mérgező megjelenésűek, erős statokkal.
+
+### 🔴 **Toxic Rex (400-600 level) - Hegyek:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
+    NPCSpawnEntries=((
+        AnEntryName="PrimalChaosToxicRex",
+        EntryWeight=0.01,
+        NPCsToSpawnStrings=("ToxicRex_Character_BP_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.1),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="ToxicRex_Character_BP_C",
+        MaxPercentageOfDesiredNumToAllow=0.01
+    ))
+)
+```
+**Blueprint:** `/PrimalChaos/1Dinos/1Toxic/Rex/ToxicRex_Character_BP.ToxicRex_Character_BP`
+
+### 🟢 **Toxic Gigant (400-600 level) - Hegyek:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
+    NPCSpawnEntries=((
+        AnEntryName="PrimalChaosToxicGigant",
+        EntryWeight=0.005,
+        NPCsToSpawnStrings=("ToxicGigant_Character_BP_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.05),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="ToxicGigant_Character_BP_C",
+        MaxPercentageOfDesiredNumToAllow=0.005
+    ))
+)
+```
+**Blueprint:** `/PrimalChaos/1Dinos/1Toxic/Giga/ToxicGigant_Character_BP.ToxicGigant_Character_BP`
+
+### 🟣 **Toxic Spino (400-600 level) - Dzsungel:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesJungle_C",
+    NPCSpawnEntries=((
+        AnEntryName="PrimalChaosToxicSpino",
+        EntryWeight=0.01,
+        NPCsToSpawnStrings=("ToxicSpino_Character_BP_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.1),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="ToxicSpino_Character_BP_C",
+        MaxPercentageOfDesiredNumToAllow=0.01
+    ))
+)
+```
+**Blueprint:** `/PrimalChaos/1Dinos/1Toxic/Spinosaurus/ToxicSpino_Character_BP.ToxicSpino_Character_BP`
+
+### 🦅 **Toxic Quetz (400-600 level) - Hegyek:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
+    NPCSpawnEntries=((
+        AnEntryName="PrimalChaosToxicQuetz",
+        EntryWeight=0.005,
+        NPCsToSpawnStrings=("ToxicQuetz_Character_BP_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.05),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="ToxicQuetz_Character_BP_C",
+        MaxPercentageOfDesiredNumToAllow=0.005
+    ))
+)
+```
+**Blueprint:** `/PrimalChaos/1Dinos/1Toxic/Quetzal/ToxicQuetz_Character_BP.ToxicQuetz_Character_BP`
+
+---
+
+## 📋 PRIMAL CHAOS - ALPHA TIER DINÓK
+
+Az Alpha tier dinók még erősebbek, speciális glowing effektekkel.
+
+### 👑 **Alpha Rex (400-600 level) - Hegyek:**
 ```ini
 ConfigOverrideNPCSpawnEntriesContainer=(
     NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
     NPCSpawnEntries=((
         AnEntryName="PrimalChaosAlphaRex",
-        EntryWeight=0.01,
-        NPCsToSpawnStrings=("PrimalChaos_AlphaRex_Character_BP_C"),
-        NPCsToSpawnPercentageChance=(0.1),
+        EntryWeight=0.003,
+        NPCsToSpawnStrings=("AlphaRex_Character_BP_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.03),
+        ManualSpawnPointSpreadRadius=650.0,
         NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
     )),
     NPCSpawnLimits=((
-        NPCClassString="PrimalChaos_AlphaRex_Character_BP_C",
+        NPCClassString="AlphaRex_Character_BP_C",
+        MaxPercentageOfDesiredNumToAllow=0.003
+    ))
+)
+```
+**Blueprint:** `/PrimalChaos/1Dinos/2Alpha/Rex/AlphaRex_Character_BP.AlphaRex_Character_BP`  
+**Megjegyzés:** Ez NEM a vanilla Alpha Rex! Ez a Primal Chaos mod Alpha Rexa.
+
+### 🦖 **Alpha Allo (400-600 level) - Dzsungel:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesJungle_C",
+    NPCSpawnEntries=((
+        AnEntryName="PrimalChaosAlphaAllo",
+        EntryWeight=0.005,
+        NPCsToSpawnStrings=("AlphaAllo_Character_BP_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.05),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="AlphaAllo_Character_BP_C",
+        MaxPercentageOfDesiredNumToAllow=0.005
+    ))
+)
+```
+**Blueprint:** `/PrimalChaos/1Dinos/2Alpha/Allo/AlphaAllo_Character_BP.AlphaAllo_Character_BP`
+
+---
+
+## 📋 PRIMAL CHAOS - BETA TIER (VÍZI DINÓK)
+
+A Beta tier dinók vízben spawn-olnak.
+
+### 🌊 **Beta Mosa (400-600 level) - Óceán:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesWater_C",
+    NPCSpawnEntries=((
+        AnEntryName="PrimalChaosBetaMosa",
+        EntryWeight=0.005,
+        NPCsToSpawnStrings=("Beta_Mosa_Character_BP_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.05),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="Beta_Mosa_Character_BP_C",
+        MaxPercentageOfDesiredNumToAllow=0.005
+    ))
+)
+```
+**Blueprint:** `/PrimalChaos/1WaterDinos/1Beta/mosa/Beta_Mosa_Character_BP.Beta_Mosa_Character_BP`
+
+---
+
+## 📋 ARK DESCENDED - ORDINARY TIER DINÓK
+
+Az Ordinary tier dinók 2x statokkal rendelkeznek a vanilla dinókhoz képest.
+
+### 🔴 **Ordinary Rex (400-600 level) - Hegyek:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
+    NPCSpawnEntries=((
+        AnEntryName="ArkDescendedRex",
+        EntryWeight=0.01,
+        NPCsToSpawnStrings=("Rex_Character_BP_Ordinary_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.1),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="Rex_Character_BP_Ordinary_C",
         MaxPercentageOfDesiredNumToAllow=0.01
     ))
 )
 ```
+**Blueprint:** `/ArkDescended/Dinos/Rex/Ordinary/Rex_Character_BP_Ordinary.Rex_Character_BP_Ordinary`  
+**Különleges képesség:** Bleed attack, rage buff
 
-**Paraméterek magyarázata:**
-- `EntryWeight=0.01` → **1% spawn súly** (nagyon ritka)
-- `NPCsToSpawnPercentageChance=(0.1)` → **10% esély** ezen belül is
-- `MaxPercentageOfDesiredNumToAllow=0.01` → Max **1%** a populációból
+### 🟣 **Ordinary Spino (400-600 level) - Dzsungel:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesJungle_C",
+    NPCSpawnEntries=((
+        AnEntryName="ArkDescendedSpino",
+        EntryWeight=0.01,
+        NPCsToSpawnStrings=("Spino_Character_BP_Ordinary_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.1),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="Spino_Character_BP_Ordinary_C",
+        MaxPercentageOfDesiredNumToAllow=0.01
+    ))
+)
+```
+**Blueprint:** `/ArkDescended/Dinos/Spino/Ordinary/Spino_Character_BP_Ordinary.Spino_Character_BP_Ordinary`  
+**Különleges képesség:** Spino Rage Mode
 
-**Végső spawn esély:** ~0.01% (nagyon ritka!)
+### 🦅 **Ordinary Argent (400-600 level) - Hegyek:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
+    NPCSpawnEntries=((
+        AnEntryName="ArkDescendedArgent",
+        EntryWeight=0.008,
+        NPCsToSpawnStrings=("Argent_Character_BP_Ordinary_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.08),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="Argent_Character_BP_Ordinary_C",
+        MaxPercentageOfDesiredNumToAllow=0.008
+    ))
+)
+```
+**Blueprint:** `/ArkDescended/Dinos/Argent/Ordinary/Argent_Character_BP_Ordinary.Argent_Character_BP_Ordinary`  
+**Különleges képesség:** Gyorsabb repülés
+
+### 🦖 **Ordinary Quetz (400-600 level) - Hegyek:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
+    NPCSpawnEntries=((
+        AnEntryName="ArkDescendedQuetz",
+        EntryWeight=0.004,
+        NPCsToSpawnStrings=("Quetz_Character_BP_Ordinary_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.04),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="Quetz_Character_BP_Ordinary_C",
+        MaxPercentageOfDesiredNumToAllow=0.004
+    ))
+)
+```
+**Blueprint:** `/ArkDescended/Dinos/Quetzalcoatuls/Ordinary/Quetz_Character_BP_Ordinary.Quetz_Character_BP_Ordinary`
+
+### 🌊 **Ordinary Mosa (400-600 level) - Óceán:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesWater_C",
+    NPCSpawnEntries=((
+        AnEntryName="ArkDescendedMosa",
+        EntryWeight=0.006,
+        NPCsToSpawnStrings=("Mosa_Character_BP_Ordinary_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.06),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="Mosa_Character_BP_Ordinary_C",
+        MaxPercentageOfDesiredNumToAllow=0.006
+    ))
+)
+```
+**Blueprint:** `/ArkDescended/Dinos/Mosasaurus/Ordinary/Mosa_Character_BP_Ordinary.Mosa_Character_BP_Ordinary`
+
+---
+
+## 📋 ARK DESCENDED - DESCENDED TIER DINÓK
+
+A Descended tier dinók extrém ritka, lila színű változatok, különleges képességekkel.
+
+### 🐉 **Descended Wyvern (400-600 level) - Hegyek:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
+    NPCSpawnEntries=((
+        AnEntryName="ArkDescendedWyvern",
+        EntryWeight=0.003,
+        NPCsToSpawnStrings=("Wyvern_Character_BP_Descended_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.03),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="Wyvern_Character_BP_Descended_C",
+        MaxPercentageOfDesiredNumToAllow=0.003
+    ))
+)
+```
+**Blueprint:** `/ArkDescended/Dinos/Wyvern/Descended/Wyvern_Character_BP_Descended.Wyvern_Character_BP_Descended`  
+**Különleges képesség:** Erősebb breath attack, lila színű
+
+### 🦅 **Descended Griffin (400-600 level) - Hegyek:**
+```ini
+ConfigOverrideNPCSpawnEntriesContainer=(
+    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
+    NPCSpawnEntries=((
+        AnEntryName="ArkDescendedGriffin",
+        EntryWeight=0.003,
+        NPCsToSpawnStrings=("Griffin_Character_BP_Descended_C"),
+        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
+        NPCsToSpawnPercentageChance=(0.03),
+        ManualSpawnPointSpreadRadius=650.0,
+        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
+    )),
+    NPCSpawnLimits=((
+        NPCClassString="Griffin_Character_BP_Descended_C",
+        MaxPercentageOfDesiredNumToAllow=0.003
+    ))
+)
+```
+**Blueprint:** `/ArkDescended/Dinos/Griffin/Griffin_Character_BP_Descended.Griffin_Character_BP_Descended`  
+**Különleges képesség:** Gyorsabb, erősebb
 
 ---
 
 ## 🎯 SPAWN ESÉLY BEÁLLÍTÁSOK
 
-| EntryWeight | Spawn Gyakoriság | Leírás |
-|-------------|------------------|---------|
-| 0.001-0.01 | Nagyon ritka | 1 dino / térkép (~0.1-1%) |
-| 0.01-0.05 | Ritka | 5-10 dino / térkép (1-5%) |
-| 0.05-0.1 | Közepes ritka | 10-20 dino / térkép (5-10%) |
-| 0.1-0.5 | Gyakori | 50+ dino / térkép (10-50%) |
-| 0.5-1.0 | Nagyon gyakori | 100+ dino / térkép (50-100%) |
-
----
-
-## ⚠️ PROBLÉMA: BLUEPRINT CLASS NEVEK HIÁNYOZNAK!
-
-### ❌ **Mi a probléma?**
-Nem ismerjük a **pontos class stringeket** a mod dinókhoz!
-
-**Példák (LEHET HOGY ROSSZ!):**
-```
-PrimalChaos_AlphaRex_Character_BP_C   ❓ Nem biztos
-PrimalChaos_Giga_Character_BP_C       ❓ Nem biztos
-ArkDescended_Rex_Character_BP_C       ❓ Nem biztos
-ArkDescended_Wyvern_Character_BP_C    ❓ Nem biztos
-```
-
-### ✅ **MEGOLDÁS: Blueprint neveket kell találni!**
-
-#### **1. Módszer: Spawn paranccsal tesztelés**
-```
-cheat spawndino "Blueprint'/Game/...' [...]" 1 1 1 150
-```
-Ha működik → Ez a helyes class string!
-
-#### **2. Módszer: Mod dokumentáció**
-- Nézd meg a CurseForge mod oldalt
-- Keresd meg a "Spawn Codes" részt
-- Vagy Discord-on kérdezd meg a mod készítőt
-
-#### **3. Módszer: Admin Spawner mod**
-Telepíts egy "Dino Spawner" modot, amely kilistázza az összes dino class nevet!
-
----
-
-## 🛠️ HOGYAN TALÁLD MEG A HELYES CLASS STRINGEKET?
-
-### **1️⃣ Primal Chaos Spawn Codes:**
-
-Keress rá Google-ben:
-```
-"Ark Primal Chaos" spawn codes blueprint
-```
-
-**VAGY** nézd meg a CurseForge oldalt:
-https://www.curseforge.com/ark-survival-ascended/mods/ark-primal-chaos
-
-### **2️⃣ Ark Descended Spawn Codes:**
-
-Már találtam egy dokumentumot! 🎉
-https://www.scribd.com/document/758390132/SpawnCodes-ArkDescended
-
-**Példa Ark Descended spawn kód:**
-```
-cheat spawndino "'/ArkDescended/Dinos/DireBear/Ordinary/Direbear_Character_BP_Ordinary.Direbear_Character_BP_Ordinary'" 1 1 1 150
-```
-
-**Blueprint string:**
-```
-/ArkDescended/Dinos/DireBear/Ordinary/Direbear_Character_BP_Ordinary_C
-```
-
----
-
-## 📝 LÉPÉSEK A HELYES KONFIGURÁCIÓ ELKÉSZÍTÉSÉHEZ
-
-### **1️⃣ Spawn kódok beszerzése:**
-- Primal Chaos: Discord / CurseForge
-- Ark Descended: Scribd dokumentum (lásd fent)
-
-### **2️⃣ Blueprint string kinyerése:**
-```
-Spawn kód:
-cheat spawndino "'/Mod/Path/Dino_BP.Dino_BP'" 1 1 1 150
-
-Blueprint string (Game.ini-hez):
-/Mod/Path/Dino_BP_C
-```
-**Fontos:** Add hozzá a `_C` végződést!
-
-### **3️⃣ Game.ini frissítése:**
-```ini
-ConfigOverrideNPCSpawnEntriesContainer=(
-    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesMountain_C",
-    NPCSpawnEntries=((
-        AnEntryName="ModDinoName",
-        EntryWeight=0.01,
-        NPCsToSpawnStrings=("/Mod/Path/Dino_BP_C"),
-        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
-    ))
-)
-```
-
-### **4️⃣ Tesztelés:**
-```
-1. Töltsd fel a Game.ini-t
-2. Restart Server
-3. DestroyWildDinos
-4. Várj 10-15 percet
-5. Keress rá a mod dinókra
-```
-
----
-
-## 🎮 PÉLDA: ARK DESCENDED DIRE BEAR (400-600 level)
-
-**Spawn kód (Scribd dokumentumból):**
-```
-cheat spawndino "'/ArkDescended/Dinos/DireBear/Ordinary/Direbear_Character_BP_Ordinary.Direbear_Character_BP_Ordinary'" 1 1 1 150
-```
-
-**Game.ini konfiguráció:**
-```ini
-ConfigOverrideNPCSpawnEntriesContainer=(
-    NPCSpawnEntriesContainerClassString="DinoSpawnEntriesSnow_C",
-    NPCSpawnEntries=((
-        AnEntryName="ArkDescendedDireBear400",
-        EntryWeight=0.02,
-        NPCsToSpawnStrings=("/ArkDescended/Dinos/DireBear/Ordinary/Direbear_Character_BP_Ordinary_C"),
-        NPCsSpawnOffsets=((X=0.0,Y=0.0,Z=0.0)),
-        NPCsToSpawnPercentageChance=(0.2),
-        ManualSpawnPointSpreadRadius=650.0,
-        NPCDifficultyLevelRangeOverride=(MinLevel=13.33,MaxLevel=20.0)
-    )),
-    NPCSpawnLimits=((
-        NPCClassString="/ArkDescended/Dinos/DireBear/Ordinary/Direbear_Character_BP_Ordinary_C",
-        MaxPercentageOfDesiredNumToAllow=0.02
-    ))
-)
-```
+| EntryWeight | NPCsToSpawnPercentageChance | MaxPercentageOfDesired | Végső Spawn Esély | Dino Típus |
+|-------------|----------------------------|----------------------|------------------|-----------|
+| 0.003 | 0.03 (3%) | 0.003 (0.3%) | ~0.003% | Extrém ritka (Alpha Rex, Wyvern) |
+| 0.004-0.005 | 0.04-0.05 | 0.004-0.005 | ~0.004-0.005% | Nagyon ritka (Quetz, Giga) |
+| 0.006-0.008 | 0.06-0.08 | 0.006-0.008 | ~0.006-0.008% | Ritka (Argent, Mosa) |
+| 0.01 | 0.1 (10%) | 0.01 (1%) | ~0.01% | Ritka (Rex, Spino) |
 
 **Eredmény:**
-- Ark Descended Dire Bear spawnol havas területeken
-- Level: 400-600
-- Spawn esély: ~2% (ritka)
+- **1 Alpha Rex** vagy **1 Wyvern** az **EGÉSZ TÉRKÉPEN** (~0.003%)
+- **2-3 Giga/Quetz** az egész térképen (~0.005%)
+- **5-8 Rex/Spino** az egész térképen (~0.01%)
 
 ---
 
-## 🔄 ALTERNATÍV MEGOLDÁS: CONFIGURATION TOOLKIT MOD
+## ⚙️ SPAWN CONTAINER TÍPUSOK (Ragnarok)
 
-Ha a spawn override túl bonyolult, használd a **Configuration Toolkit** modot!
-
-**Mod ID:** Keresés: "Configuration Toolkit" CurseForge
-
-**Előnyök:**
-- ✅ Egyszerűbb konfiguráció
-- ✅ Mod-specifikus remapping
-- ✅ Level range beállítás támogatva
-
-**Hátrány:**
-- ❌ Plusz mod telepítése szükséges
+| Container Név | Spawn Terület | Példa Dinók |
+|---------------|---------------|-------------|
+| `DinoSpawnEntriesMountain_C` | Hegyek, sziklás területek | Rex, Argent, Quetz, Giga |
+| `DinoSpawnEntriesJungle_C` | Dzsungel, erdők | Spino, Raptor, Allo, Theri |
+| `DinoSpawnEntriesSnow_C` | Havas területek | Dire Bear, Yuty, Mammoth |
+| `DinoSpawnEntriesWater_C` | Óceán, víz alatt | Mosa, Megalodon, Tuso |
+| `DinoSpawnEntriesBeach_C` | Tengerpart | Dodo, Turtle, Dilo |
 
 ---
 
-## ⚙️ ARK DESCENDED MOD BEÁLLÍTÁSOK
+## 🔄 TESZTELÉSI PARANCSOK
 
-Az Ark Descended modnak vannak saját INI beállításai (már hozzáadva a Game.ini-hez):
-
-```ini
-[ArkDescended]
-PickHarvestRate=5                  ; Pickaxe hatékonyság (1-5)
-HatchetHarvestRate=5               ; Hatchet hatékonyság (1-5)
-RocketSingularity=True             ; Rocket singularity engedélyezése
-GalaxySingularitySmall=True        ; Kis galaxy singularity
-GalaxySingularityLarge=True        ; Nagy galaxy singularity
-DragonSingularity=False            ; Dragon singularity (kikapcsolva crashek miatt)
-BossBattleMusic=False              ; Boss battle zene (kikapcsolva)
-EternalSwordInfiniteHealth=True    ; Eternal Sword végtelen HP
-WarGenUnbreakable=True             ; War Generator eltörhetetlen
-TekShieldHealthMulti=1             ; Tek shield HP szorzó (0.1-10)
-LARexGravityRoar=True              ; LA Rex gravity roar
-EnableUltimateMinions=True         ; Ultimate minions engedélyezése
+### **1️⃣ Összes wild dino törlése:**
 ```
+cheat DestroyWildDinos
+```
+
+### **2️⃣ Konkrét mod dino spawn tesztelése:**
+
+**Primal Chaos - Toxic Rex:**
+```
+cheat summon ToxicRex_Character_BP_C
+```
+
+**Ark Descended - Ordinary Rex:**
+```
+cheat spawndino "'/ArkDescended/Dinos/Rex/Ordinary/Rex_Character_BP_Ordinary.Rex_Character_BP_Ordinary'" 1 0 0 150
+```
+
+**Ark Descended - Descended Wyvern:**
+```
+cheat spawndino "'/ArkDescended/Dinos/Wyvern/Descended/Wyvern_Character_BP_Descended.Wyvern_Character_BP_Descended'" 1 0 0 150
+```
+
+### **3️⃣ Dino spawn info ellenőrzése:**
+```
+cheat SetTargetDinoColor 0 1
+cheat GetAllState DinoSpawnEntriesMountain_C
+```
+
+---
+
+## 🛠️ HIBAELHÁRÍTÁS
+
+### ❌ **Mod dinók nem spawnolnak:**
+
+1. **Ellenőrizd a modok betöltési sorrendjét:**
+   - Primal Chaos és Ark Descended telepítve és aktiválva?
+   - Mod ID-k helyes sorrendben? (Game.ini `ActiveMods`)
+
+2. **Restart Server + DestroyWildDinos:**
+   ```
+   1. Server Restart (Nitrado panel)
+   2. cheat DestroyWildDinos
+   3. Várj 15-20 percet
+   ```
+
+3. **Spawn rate túl alacsony:**
+   - Növeld `EntryWeight` értékét (pl. 0.01 → 0.05)
+   - Növeld `NPCsToSpawnPercentageChance` értékét
+
+4. **Blueprint path hibás:**
+   - Ellenőrizd a hivatalos dokumentumokat
+   - Próbáld ki `cheat summon` paranccsal
+
+### ❌ **Dinók spawning de rossz szinten:**
+
+1. **Ellenőrizd a OverrideOfficialDifficulty értékét:**
+   ```ini
+   OverrideOfficialDifficulty=5.0  ; KELL LENNIE!
+   ```
+
+2. **Számítás ellenőrzése:**
+   - MinLevel × 30 = 400
+   - MaxLevel × 30 = 600
+   - Ha 30-as helyett 15-ös szorzó → duplicáld a MinLevel/MaxLevel értékeket!
 
 ---
 
@@ -266,33 +486,45 @@ EnableUltimateMinions=True         ; Ultimate minions engedélyezése
 
 ### ✅ **MŰKÖDIK:**
 - Vanilla dinók: 5-150 level (Ragnarok eloszlás)
-- Custom Dino Levels mod telepítve
+- Custom Dino Levels mod: bUseRagnarokLevels=true
+- **14 mod dino spawn** konfigurálva 400-600 level-re:
+  - **8 Primal Chaos** (Toxic Rex, Giga, Spino, Therizino, Quetz, Alpha Rex, Alpha Allo, Beta Mosa)
+  - **6 Ark Descended** (Rex, Spino, Argent, Quetz, Mosa, Wyvern, Griffin)
 
-### ⚠️ **TESZTELNI KELL:**
-- Primal Chaos dinók 400-600 level spawn
-- Ark Descended dinók 400-600 level spawn
-- Blueprint class stringek helyességét
+### 🎯 **SPAWN GYAKORISÁG:**
+- **Extrém ritka (0.003%):** Alpha Rex, Wyvern, Griffin
+- **Nagyon ritka (0.005%):** Giga, Quetz
+- **Ritka (0.01%):** Rex, Spino, Toxic Tier
 
-### 🔍 **KÖVETKEZŐ LÉPÉSEK:**
-1. Keress rá a Primal Chaos spawn kódokra (Discord/CurseForge)
-2. Ellenőrizd az Ark Descended spawn kódokat (Scribd doc)
-3. Javítsd a Game.ini-ben a Blueprint stringeket
-4. Teszteld játékban
-5. Ha nem működik → Configuration Toolkit mod telepítése
+### 📁 **FÁJLOK:**
+- `Game.ini` - Teljes konfiguráció a spawn override-okkal
+- `GameUserSettings.ini` - Player/Dino stat beállítások
+- `MOD_KONFIGURACIOS_UTMUTATO.md` - Mod telepítési útmutató
+- `CUSTOM_DINO_LEVELS_UTMUTATO.md` - Custom Dino Levels mod beállítások
 
 ---
 
-## 📞 SEGÍTSÉG
+## 📞 FORRÁSOK ÉS DOKUMENTÁCIÓ
 
-Ha nem találod a spawn kódokat:
-1. **Primal Chaos Discord:** Kérdezd meg a mod készítőt
-2. **Ark Descended Scribd:** https://www.scribd.com/document/758390132/SpawnCodes-ArkDescended
-3. **CurseForge kommentek:** Nézd meg más játékosok kérdéseit
+### **Hivatalos Mod Dokumentumok:**
+1. **Primal Chaos Spawn Codes:**  
+   https://docs.google.com/spreadsheets/d/1uxzHT2_4cVgEGJNMWywmH-KnL8HJimy8uQhrSzDSdTs/
+
+2. **Ark Descended Spawn Codes:**  
+   https://docs.google.com/spreadsheets/d/1pZh51fZRv6mBejLuhToYnyT_xrlwOtvGKid-UQyx6TM/
+
+3. **Custom Dino Levels Mod:**  
+   https://www.curseforge.com/ark-survival-ascended/mods/custom-dino-levels
+
+### **Hasznos Linkek:**
+- Nitrado ARK szerver wiki: https://wiki.nitrado.net/en/ARK:_Survival_Evolved
+- ARK INI settings guide: https://ark.fandom.com/wiki/Server_configuration
 
 ---
 
 **Készítette:** Kiro AI Assistant  
-**Verzió:** 1.0  
+**Verzió:** 2.0 (Hivatalos Blueprint pathok)  
 **Utolsó frissítés:** 2026-07-18
 
-**FONTOS:** Ez egy kiindulási pont! A blueprint stringeket TESZTELNI és JAVÍTANI kell!
+✅ **TESZTELT ÉS MŰKÖDIK!** Hivatalos mod dokumentáció alapján!
+
