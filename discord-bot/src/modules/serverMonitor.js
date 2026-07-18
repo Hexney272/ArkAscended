@@ -81,7 +81,30 @@ async function queryServer() {
       map: state.map || null,
     };
   } catch (error) {
-    logger.warn(`⚠️ Nem sikerült lekérdezni a szervert (${server.host}:${server.port}) - ${error.message}`);
+    // Az ASA lekérdezés az Epic Online Services matchmaking API-ját
+    // hívja (nem közvetlen UDP kapcsolatot a szerverhez!) - a bot
+    // ott KERESI a szervert a globális session-listában IP+port
+    // alapján. Ha Epic nem hirdeti megfelelően a session-t (ismert,
+    // dokumentált jelenség ASA dedicated szervereknél, ún. "No
+    // Sessions Found"), a lekérdezés "Server not found" hibát ad,
+    // FÜGGETLENÜL attól, hogy a szerver valójában fut-e a
+    // játékosok számára. Ez nem javítható a bot kódjából - Epic
+    // oldali hirdetési probléma.
+    const isNotFound = error.message?.includes('Server not found') ||
+                        error.stack?.includes('Server not found');
+
+    if (isNotFound) {
+      logger.warn(
+        `⚠️ Epic nem találja a szervert a matchmaking listájában ` +
+        `(${server.host}:${server.port}). Ez nem feltétlenül jelenti, ` +
+        `hogy a szerver offline - lehet Epic-oldali session-hirdetési ` +
+        `hiba (ismert ASA jelenség). Próbáld csatlakozni közvetlenül ` +
+        `a játékból, hogy megerősítsd, fut-e valójában.`
+      );
+    } else {
+      logger.warn(`⚠️ Nem sikerült lekérdezni a szervert (${server.host}:${server.port}) - ${error.message}`);
+    }
+
     return {
       ...server,
       status: 'offline',
@@ -89,6 +112,7 @@ async function queryServer() {
       players: null,
       maxPlayers: null,
       map: null,
+      queryLimitation: isNotFound,
     };
   }
 }
@@ -104,6 +128,10 @@ function formatServerLine(result) {
   }
 
   if (!result.online) {
+    if (result.queryLimitation) {
+      return `${result.label}\n🟡 Nem található az Epic session-listában\n` +
+             `_(lehet, hogy fut - Epic-oldali hirdetési korlát, próbálj csatlakozni a játékból)_`;
+    }
     return `${result.label}\n🔴 Offline vagy nem elérhető`;
   }
 
