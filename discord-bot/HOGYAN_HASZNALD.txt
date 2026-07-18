@@ -1,0 +1,82 @@
+╔═══════════════════════════════════════════════════════════════════════╗
+║                                                                       ║
+║            🦖 WildArk Discord Builder - HASZNÁLATI ÚTMUTATÓ 🦖       ║
+║                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+📦 MIT KAPTÁL?
+
+✅ Teljes Discord bot projekt
+✅ Automatikus telepítő script-ek
+✅ Egyszerű indító script-ek  
+✅ Részletes dokumentáció
+✅ Minden kész a használatra!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 GYORS INDÍTÁS - 3 LÉPÉS
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ LINUX / MAC                                                         │
+└─────────────────────────────────────────────────────────────────────┘
+
+1️⃣  Futtasd a telepítő scriptet:
+
+    ./setup.sh
+
+2️⃣  Add meg a Discord token-eket (script kéri)
+
+3️⃣  Discord-on használd:
+
+    /setup
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ WINDOWS                                                             │
+└─────────────────────────────────────────────────────────────────────┘
+
+1️⃣  Duplaklikk vagy futtasd:
+
+    setup.bat
+
+2️⃣  Add meg a Discord token-eket (script kéri)
+
+3️⃣  Discord-on használd:
+
+    /setup
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔑 DISCORD TOKEN-EK BESZERZÉSE
+
+1. https://discord.com/developers/applications
+2. "New Application" gomb
+3. "Bot" fül → "Add Bot"
+4. Kapcsold BE az Intent-eket: ✅✅✅
+   - Presence Intent
+   - Server Members Intent
+   - Message Content Intent
+5. "Reset Token" → Másold ki
+6. "General Information" → Application ID másolása
+7. Discord → Jobb klikk szerverre → Copy Server ID
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📂 FONTOS FÁJLOK
+
+setup.sh / setup.bat     Automatikus telepítő
+start.sh / start.bat     Gyors indító
+GYORS_INDITAS.md        ⭐ KEZDD ITT! ⭐
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 PARANCSOK
+
+Linux/Mac:               Windows:
+./setup.sh              setup.bat
+./start.sh              start.bat
+npm start               npm start
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🦖 Részletes útmutató: GYORS_INDITAS.md 💜
