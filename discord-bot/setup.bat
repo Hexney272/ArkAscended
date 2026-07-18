@@ -116,6 +116,23 @@ if "%GUILD_ID%"=="" (
     exit /b 1
 )
 
+echo ------------------------------------------------------------
+echo.
+echo ARK Szerver Statusz Monitor beallitasa (opcionalis):
+echo    A szerver IP-jet a Nitrado/hoszting admin panelen talalod.
+echo    A QUERY PORT nem biztos hogy megegyezik a game porttal!
+echo    Ha most kihagyod, ures marad es a bot "ismeretlen"
+echo    statusszal jelzi - kesobb a .env fajlban is megadhatod.
+echo.
+set /p ARK_SERVER_HOST="   Szerver IP (ENTER = kihagyas): "
+if not "%ARK_SERVER_HOST%"=="" (
+    set /p ARK_SERVER_QUERY_PORT="   Query Port (ENTER = 27015): "
+    if "%ARK_SERVER_QUERY_PORT%"=="" set ARK_SERVER_QUERY_PORT=27015
+) else (
+    set ARK_SERVER_QUERY_PORT=27015
+)
+echo.
+
 echo .env fajl letrehozasa...
 
 (
@@ -130,6 +147,9 @@ echo TICKET_CATEGORY_NAME=Support Tickets
 echo MAX_TICKETS_PER_USER=3
 echo WELCOME_CHANNEL_NAME=udvozles
 echo LOG_CHANNEL_NAME=staff-logs
+echo ARK_SERVER_HOST=%ARK_SERVER_HOST%
+echo ARK_SERVER_QUERY_PORT=%ARK_SERVER_QUERY_PORT%
+echo SERVER_STATUS_REFRESH_MINUTES=1
 ) > .env
 
 echo [OK] .env fajl letrehozva!
