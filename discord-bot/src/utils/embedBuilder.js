@@ -70,10 +70,14 @@ export class WildArkEmbed extends EmbedBuilder {
       .setDescription(
         `Szia ${member}! 🦖\n\n` +
         `Köszönjük, hogy csatlakoztál hozzánk!\n\n` +
-        `📜 Először is olvasd el a szabályzatot\n` +
+        `🌐 Elsőként válassz nyelvet a #🌐-nyelv-language csatornában\n` +
+        `📜 Olvasd el a szabályzatot\n` +
         `🎭 Válassz rangot magadnak\n` +
         `💬 Mutatkozz be az általános csatornában\n\n` +
-        `Jó játékot kívánunk! 🎮`
+        `Jó játékot kívánunk! 🎮\n\n` +
+        `─────────────────────\n` +
+        `Hi ${member}! Please pick a language in #🌐-nyelv-language ` +
+        `so the bot can talk to you in English or Hungarian.`
       )
       .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
       .setTimestamp()

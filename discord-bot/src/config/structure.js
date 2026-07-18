@@ -94,6 +94,12 @@ export const SERVER_STRUCTURE = {
           topic: 'Válassz rangot a reakciókkal!',
           permissions: { everyone: { SendMessages: false } }
         },
+        {
+          name: '🌐-nyelv-language',
+          type: 'text',
+          topic: 'Válassz nyelvet / Choose your language',
+          permissions: { everyone: { SendMessages: false } }
+        },
       ]
     },
     {

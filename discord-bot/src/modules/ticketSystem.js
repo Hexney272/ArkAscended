@@ -6,6 +6,8 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } from 'discord.js';
 import { WildArkEmbed } from '../utils/embedBuilder.js';
 import { createTicketChannel } from './channelBuilder.js';
+import { getMemberLanguage } from './languageSystem.js';
+import { t } from '../config/translations.js';
 import logger from '../utils/logger.js';
 
 // Aktív ticketek nyilvántartása
@@ -63,10 +65,9 @@ export async function handleTicketReaction(reaction, user) {
     const existingTicket = activeTickets.get(user.id);
     if (existingTicket) {
       try {
-        await user.send(
-          `⚠️ Már van egy aktív ticketed: <#${existingTicket.channelId}>\n` +
-          `Kérlek, azt használd vagy zárd be, mielőtt újat nyitsz!`
-        );
+        const member = await reaction.message.guild.members.fetch(user.id);
+        const langCode = getMemberLanguage(member);
+        await user.send(t(langCode, 'ticketAlreadyOpen', existingTicket.channelId));
       } catch (error) {
         // DM küldés sikertelen
       }
@@ -90,6 +91,7 @@ async function createTicket(guild, user) {
   try {
     const member = await guild.members.fetch(user.id);
     const ticketNumber = ticketCounter++;
+    const langCode = getMemberLanguage(member);
 
     // Ticket csatorna létrehozása
     const roles = new Map();
@@ -106,22 +108,16 @@ async function createTicket(guild, user) {
       createdAt: Date.now(),
     });
 
-    // Welcome üzenet a ticket csatornában
+    // Welcome üzenet a ticket csatornában - a tag beállított nyelvén
     const welcomeEmbed = new WildArkEmbed()
-      .setTitle(`🎫 Ticket #${ticketNumber}`)
-      .setDescription(
-        `Szia ${member}! 👋\n\n` +
-        `Köszönjük, hogy felvetted velünk a kapcsolatot!\n\n` +
-        `📝 **Kérlek, írd le részletesen a problémádat vagy kérdésedet.**\n` +
-        `⏰ A staff hamarosan válaszol.\n\n` +
-        `A ticket bezárásához kattints a 🔒 gombra vagy használd a \`/ticket close\` parancsot.`
-      )
+      .setTitle(t(langCode, 'ticketWelcomeTitle', ticketNumber))
+      .setDescription(t(langCode, 'ticketWelcomeDescription', member))
       .setColor(0x10B981);
 
-    // Close gomb
+    // Close gomb - a tag beállított nyelvén
     const closeButton = new ButtonBuilder()
       .setCustomId('ticket_close')
-      .setLabel('Ticket bezárása')
+      .setLabel(t(langCode, 'ticketCloseButton'))
       .setEmoji('🔒')
       .setStyle(ButtonStyle.Danger);
 
@@ -133,13 +129,9 @@ async function createTicket(guild, user) {
       components: [row]
     });
 
-    // DM küldése a usernek
+    // DM küldése a usernek, a beállított nyelvén
     try {
-      await user.send(
-        `✅ Ticket létrehozva: <#${ticketChannel.id}>\n` +
-        `Ticket szám: **#${ticketNumber}**\n` +
-        `A staff hamarosan válaszol!`
-      );
+      await user.send(t(langCode, 'ticketCreatedDM', ticketChannel.id, ticketNumber));
     } catch (error) {
       // DM küldés sikertelen
     }

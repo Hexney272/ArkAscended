@@ -113,9 +113,13 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
     const { handleReactionRole } = await import('./modules/reactionRoles.js');
     const { handleTicketReaction } = await import('./modules/ticketSystem.js');
+    const { handleLanguageReaction } = await import('./modules/languageSystem.js');
 
     // Reaction Roles
     await handleReactionRole(reaction, user, 'add');
+
+    // Nyelvválasztó
+    await handleLanguageReaction(reaction, user, 'add');
 
     // Ticket System
     if (reaction.emoji.name === '🎫') {
@@ -135,7 +139,10 @@ client.on('messageReactionRemove', async (reaction, user) => {
     if (reaction.message.partial) await reaction.message.fetch();
 
     const { handleReactionRole } = await import('./modules/reactionRoles.js');
+    const { handleLanguageReaction } = await import('./modules/languageSystem.js');
+
     await handleReactionRole(reaction, user, 'remove');
+    await handleLanguageReaction(reaction, user, 'remove');
   } catch (error) {
     logger.error('Hiba a reaction remove handlerben:', error);
   }

@@ -10,6 +10,7 @@ import { buildChannels } from '../modules/channelBuilder.js';
 import { setupPermissions } from '../modules/permissionBuilder.js';
 import { setupReactionRoles } from '../modules/reactionRoles.js';
 import { setupTicketSystem } from '../modules/ticketSystem.js';
+import { setupLanguageSelector } from '../modules/languageSystem.js';
 import { WildArkEmbed } from '../utils/embedBuilder.js';
 import logger from '../utils/logger.js';
 
@@ -25,7 +26,7 @@ export const setupCommand = {
       await interaction.deferReply();
 
       const guild = interaction.guild;
-      const totalSteps = 9;
+      const totalSteps = 10;
       let currentStep = 0;
 
       logger.bot('🚀 WildArk szerver telepítés indítása...');
@@ -78,7 +79,15 @@ export const setupCommand = {
       await setupReactionRoles(guild, roles);
       await delay(1000);
 
-      // Step 7: Ticket rendszer beállítása
+      // Step 7: Nyelvválasztó beállítása
+      currentStep++;
+      await interaction.editReply({
+        embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '🌐 Nyelvválasztó beállítása...')]
+      });
+      await sendLanguageSetup(guild);
+      await delay(1000);
+
+      // Step 8: Ticket rendszer beállítása
       currentStep++;
       await interaction.editReply({
         embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '🎫 Ticket rendszer beállítása...')]
@@ -86,7 +95,7 @@ export const setupCommand = {
       await setupTicketSystem(guild, roles);
       await delay(1000);
 
-      // Step 8: Welcome üzenet
+      // Step 9: Welcome üzenet
       currentStep++;
       await interaction.editReply({
         embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '👋 Welcome rendszer beállítása...')]
@@ -94,7 +103,7 @@ export const setupCommand = {
       await sendWelcomeSetup(guild);
       await delay(1000);
 
-      // Step 9: Befejezés
+      // Step 10: Befejezés
       currentStep++;
       await interaction.editReply({
         embeds: [WildArkEmbed.setupProgress(currentStep, totalSteps, '✅ Finalizálás...')]
@@ -110,6 +119,7 @@ export const setupCommand = {
         `✅ Összes csatorna létrehozva\n` +
         `✅ Jogosultságok beállítva\n` +
         `✅ Reaction Roles aktív\n` +
+        `✅ Nyelvválasztó aktív (🇭🇺/🇬🇧)\n` +
         `✅ Ticket rendszer aktív\n` +
         `✅ AutoMod aktív\n` +
         `✅ Welcome rendszer aktív\n\n` +
@@ -146,6 +156,21 @@ async function sendRules(guild) {
     const embed = WildArkEmbed.rules();
     await rulesChannel.send({ embeds: [embed] });
     logger.success('✅ Szabályzat elküldve');
+  }
+}
+
+/**
+ * Nyelvválasztó panel kiküldése
+ * @param {Guild} guild - Discord Guild
+ */
+async function sendLanguageSetup(guild) {
+  const langChannel = guild.channels.cache.find(ch => ch.name === '🌐-nyelv-language');
+
+  if (langChannel) {
+    await setupLanguageSelector(guild, langChannel);
+    logger.success('✅ Nyelvválasztó panel elküldve');
+  } else {
+    logger.warn('⚠️ Nyelv csatorna nem található, nyelvválasztó kihagyva');
   }
 }
 

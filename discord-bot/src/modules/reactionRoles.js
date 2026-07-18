@@ -4,6 +4,8 @@
  */
 
 import { WildArkEmbed } from '../utils/embedBuilder.js';
+import { getMemberLanguage } from './languageSystem.js';
+import { t } from '../config/translations.js';
 import logger from '../utils/logger.js';
 
 /**
@@ -148,9 +150,10 @@ export async function handleReactionRole(reaction, user, action) {
         await member.roles.add(role);
         logger.success(`✅ Rang hozzáadva: ${roleName} -> ${user.tag}`);
         
-        // DM küldése a usernek
+        // DM küldése a usernek, a beállított nyelvén
         try {
-          await user.send(`🎉 Megkaptad a **${roleName}** rangot a WildArk szerveren!`);
+          const langCode = getMemberLanguage(member);
+          await user.send(t(langCode, 'roleGrantedDM', roleName));
         } catch (error) {
           // Ha nem lehet DM-et küldeni, nem baj
         }
