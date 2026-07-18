@@ -1,11 +1,7 @@
 @echo off
-chcp 65001 >nul 2>&1
 setlocal enabledelayedexpansion
 
-REM WildArk Discord Builder - Windows Telepito
-REM Verzio: 1.0.1 - Fixed Windows compatibility
-
-title WildArk Discord Builder Telepito
+title WildArk Discord Builder - Telepito
 
 echo.
 echo ============================================================
@@ -17,7 +13,6 @@ echo.
 echo Ez a script automatikusan telepiti es beallitja a botot!
 echo.
 
-REM Node.js ellenorzese
 echo ============================================================
 echo 1. Elofeltetelek ellenorzese...
 echo ============================================================
@@ -27,7 +22,7 @@ where node >nul 2>nul
 if %ERRORLEVEL% neq 0 (
     echo [HIBA] Node.js nincs telepitve!
     echo.
-    echo Telepitsd innen: https://nodejs.org/
+    echo Toltsd le innen: https://nodejs.org/
     echo.
     pause
     exit /b 1
@@ -48,7 +43,6 @@ echo [OK] NPM telepitve: %NPM_VERSION%
 
 echo.
 
-REM Fuggosegek telepitese
 echo ============================================================
 echo 2. Fuggosegek telepitese...
 echo ============================================================
@@ -58,7 +52,7 @@ echo npm install futtatasa...
 call npm install
 
 if %ERRORLEVEL% neq 0 (
-    echo [HIBA] Hiba a fuggosegek telepitese soran!
+    echo [HIBA] Nem sikerult telepiteni a fuggosegeket!
     pause
     exit /b 1
 )
@@ -66,7 +60,6 @@ if %ERRORLEVEL% neq 0 (
 echo [OK] Fuggosegek telepitve!
 echo.
 
-REM Token-ek bekerése
 echo ============================================================
 echo 3. Bot konfiguracio beallitasa...
 echo ============================================================
@@ -77,65 +70,55 @@ echo.
 echo Hogyan szerzed meg a token-eket?
 echo.
 echo    1. Menj ide: https://discord.com/developers/applications
-echo    2. Kattints: 'New Application'
-echo    3. Menj a 'Bot' fulre
-echo    4. Kapcsold BE az Intent-eket:
+echo    2. Kattints: New Application
+echo    3. Menj a Bot fulre
+echo    4. Kapcsold BE mindharom Intent-et:
 echo       [X] Presence Intent
 echo       [X] Server Members Intent
 echo       [X] Message Content Intent
-echo    5. Masold ki a Token-t
-echo    6. General Information -^> Application ID
-echo    7. Discord -^> Jobb klikk szerverre -^> Copy Server ID
+echo    5. Kattints: Save Changes
+echo    6. Kattints: Reset Token, majd masold ki
+echo    7. General Information fulon: Application ID masolasa
+echo    8. Discord-ban: jobb klikk a szerveredre - Copy Server ID
+echo       (Developer Mode kell hozza: Settings - Advanced)
 echo.
 echo Nyomj ENTER-t ha keszen allsz...
 pause >nul
 
 echo.
 echo ------------------------------------------------------------
-
-REM Bot Token
 echo.
 echo Discord Bot Token:
-echo    (A Bot fulrol - Reset Token utan masold ki)
 set /p DISCORD_TOKEN="   Token: "
 echo.
 
-REM Client ID
 echo Application ID (Client ID):
-echo    (General Information fulrol)
 set /p CLIENT_ID="   Client ID: "
 echo.
 
-REM Guild ID
 echo Server ID (Guild ID):
-echo    (Jobb klikk a Discord szerveredre -^> Copy Server ID)
 set /p GUILD_ID="   Guild ID: "
 echo.
 
-REM Ellenorzes
 if "%DISCORD_TOKEN%"=="" (
-    echo [HIBA] Discord Token kotelezo!
+    echo [HIBA] Discord Token megadasa kotelezo!
     pause
     exit /b 1
 )
 if "%CLIENT_ID%"=="" (
-    echo [HIBA] Client ID kotelezo!
+    echo [HIBA] Client ID megadasa kotelezo!
     pause
     exit /b 1
 )
 if "%GUILD_ID%"=="" (
-    echo [HIBA] Guild ID kotelezo!
+    echo [HIBA] Guild ID megadasa kotelezo!
     pause
     exit /b 1
 )
 
-REM .env fajl letrehozasa
 echo .env fajl letrehozasa...
 
 (
-echo # WildArk Discord Builder Configuration
-echo # Automatikusan generalva
-echo.
 echo DISCORD_TOKEN=%DISCORD_TOKEN%
 echo GUILD_ID=%GUILD_ID%
 echo CLIENT_ID=%CLIENT_ID%
@@ -152,7 +135,6 @@ echo LOG_CHANNEL_NAME=staff-logs
 echo [OK] .env fajl letrehozva!
 echo.
 
-REM Bot meghivo link
 echo ============================================================
 echo 4. Bot meghivasa a szerverre...
 echo ============================================================
@@ -165,43 +147,27 @@ echo.
 echo    %INVITE_URL%
 echo.
 
-echo Megnyitjuk a linket a bongesztoben...
+echo Megnyitjuk a linket a bongeszoben...
 start "" "%INVITE_URL%"
 echo.
 
-echo Hivd meg a botot es nyomj ENTER-t amikor kesz vagy...
+echo Hivd meg a botot, majd nyomj ENTER-t...
 pause >nul
 
 echo.
-
-REM Telepites kesz
 echo ============================================================
 echo [OK] Telepites befejezve!
 echo ============================================================
 echo.
-
-echo A bot keszen all az inditasra!
-echo.
 echo Kovetkezo lepesek:
 echo.
-echo    1. Inditsd el a botot:
-echo       npm start
-echo.
+echo    1. Inditsd el a botot: npm start
 echo    2. Varj 1-2 percet (parancsok regisztracioja)
-echo.
-echo    3. Discord-on hasznald a parancsot:
-echo       /setup
-echo.
-echo    4. Elvezd a kesz szervert!
+echo    3. Discord-on hasznald: /setup
 echo.
 
-echo Development modban (auto-restart):
-echo    npm run dev
-echo.
-
-REM Opcionalis automatikus inditas
 echo ------------------------------------------------------------
-set /p START_NOW="Szeretned most elinditani a botot? (i/n): "
+set /p START_NOW="Elinditod most a botot? (i/n): "
 
 if /i "%START_NOW%"=="i" (
     echo.
@@ -214,13 +180,13 @@ if /i "%START_NOW%"=="i" (
     call npm start
 ) else (
     echo.
-    echo A botot kesobb indithatod el: npm start
+    echo A botot kesobb indithatod: npm start
     echo.
 )
 
 echo.
 echo ============================================================
-echo Koszonjuk hogy a WildArk Discord Builder-t hasznalod!
+echo Koszonjuk, hogy a WildArk Discord Builder-t hasznalod!
 echo ============================================================
 echo.
 
