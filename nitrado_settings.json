@@ -1,9 +1,8 @@
 {
-  "GameUserSettings.ini": {
-    "ServerSettings": {
-      "ServerName": "ARK Primal Descended PvE x50",
-      "ServerPassword": "",
-      "ServerAdminPassword": "VÁLTOZTASD_MEG_EZT",
+  "ServerSettings": {
+    "ServerName": "ARK Primal Descended PvE x50",
+    "ServerPassword": "",
+    "ServerAdminPassword": "CHANGE_THIS_PASSWORD",
       "MaxPlayers": 70,
       "ServerPVE": true,
       "RCONEnabled": true,
@@ -154,5 +153,4 @@
       "ServerAutoForceRespawnWildDinosInterval": 0,
       "ForceRespawnDinos": false
     }
-  }
 }
