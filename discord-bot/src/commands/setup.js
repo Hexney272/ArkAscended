@@ -12,6 +12,7 @@ import { setupReactionRoles } from '../modules/reactionRoles.js';
 import { setupTicketSystem } from '../modules/ticketSystem.js';
 import { setupLanguageSelector } from '../modules/languageSystem.js';
 import { WildArkEmbed } from '../utils/embedBuilder.js';
+import { panelExists } from '../utils/panelGuard.js';
 import logger from '../utils/logger.js';
 
 export const setupCommand = {
@@ -151,9 +152,16 @@ export const setupCommand = {
  */
 async function sendRules(guild) {
   const rulesChannel = guild.channels.cache.find(ch => ch.name === '📜-szabályzat');
-  
+
   if (rulesChannel) {
     const embed = WildArkEmbed.rules();
+
+    // Ha a szabályzat már ki van küldve, ne duplikáljuk
+    if (await panelExists(rulesChannel, embed.data.title)) {
+      logger.warn('⚠️ Szabályzat már ki van küldve, kihagyva.');
+      return;
+    }
+
     await rulesChannel.send({ embeds: [embed] });
     logger.success('✅ Szabályzat elküldve');
   }
@@ -180,7 +188,7 @@ async function sendLanguageSetup(guild) {
  */
 async function sendWelcomeSetup(guild) {
   const welcomeChannel = guild.channels.cache.find(ch => ch.name === '👋-üdvözlés');
-  
+
   if (welcomeChannel) {
     const embed = new WildArkEmbed()
       .setTitle('👋 Üdvözöljük a WildArk közösségében!')
@@ -198,6 +206,12 @@ async function sendWelcomeSetup(guild) {
       )
       .setColor(0x9333EA)
       .setImage('https://i.imgur.com/wildark-banner.png'); // Placeholder
+
+    // Ha a welcome banner már ki van küldve, ne duplikáljuk
+    if (await panelExists(welcomeChannel, embed.data.title)) {
+      logger.warn('⚠️ Welcome banner már ki van küldve, kihagyva.');
+      return;
+    }
 
     await welcomeChannel.send({ embeds: [embed] });
     logger.success('✅ Welcome üzenet elküldve');

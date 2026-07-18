@@ -8,6 +8,7 @@ import { WildArkEmbed } from '../utils/embedBuilder.js';
 import { createTicketChannel } from './channelBuilder.js';
 import { getMemberLanguage } from './languageSystem.js';
 import { t } from '../config/translations.js';
+import { panelExists } from '../utils/panelGuard.js';
 import logger from '../utils/logger.js';
 
 // Aktív ticketek nyilvántartása
@@ -35,6 +36,12 @@ export async function setupTicketSystem(guild, roles) {
 
     // Ticket embed
     const embed = WildArkEmbed.ticket();
+
+    // Ha a panel már ki van küldve, ne duplikáljuk (pl. /setup újrafuttatásakor)
+    if (await panelExists(ticketChannel, embed.data.title)) {
+      logger.warn('⚠️ Ticket panel már létezik, kihagyva.');
+      return false;
+    }
 
     // Üzenet küldése
     const message = await ticketChannel.send({ embeds: [embed] });

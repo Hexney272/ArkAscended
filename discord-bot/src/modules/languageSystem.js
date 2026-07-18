@@ -10,6 +10,7 @@
  */
 
 import { WildArkEmbed } from '../utils/embedBuilder.js';
+import { panelExists } from '../utils/panelGuard.js';
 import logger from '../utils/logger.js';
 
 export const LANGUAGE_ROLES = {
@@ -61,6 +62,12 @@ export async function setupLanguageSelector(guild, channel) {
         `🇬🇧 **English**`
       )
       .setColor(0x9333EA);
+
+    // Ha a panel már ki van küldve, ne duplikáljuk (pl. /setup újrafuttatásakor)
+    if (await panelExists(channel, embed.data.title)) {
+      logger.warn('⚠️ Nyelvválasztó panel már létezik, kihagyva.');
+      return false;
+    }
 
     const message = await channel.send({ embeds: [embed] });
 

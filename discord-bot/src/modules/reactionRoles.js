@@ -6,6 +6,7 @@
 import { WildArkEmbed } from '../utils/embedBuilder.js';
 import { getMemberLanguage } from './languageSystem.js';
 import { t } from '../config/translations.js';
+import { panelExists } from '../utils/panelGuard.js';
 import logger from '../utils/logger.js';
 
 /**
@@ -47,6 +48,12 @@ export async function setupReactionRoles(guild, roles) {
 
     // Embed létrehozása
     const embed = WildArkEmbed.reactionRoles();
+
+    // Ha a panel már ki van küldve, ne duplikáljuk (pl. /setup újrafuttatásakor)
+    if (await panelExists(rolesChannel, embed.data.title)) {
+      logger.warn('⚠️ Reaction roles panel már létezik, kihagyva.');
+      return false;
+    }
 
     // Üzenet küldése
     const message = await rolesChannel.send({ embeds: [embed] });
