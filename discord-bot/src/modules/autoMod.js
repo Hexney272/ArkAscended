@@ -336,6 +336,8 @@ function isStaff(member) {
   return member.roles.cache.some(role => staffRoles.includes(role.name));
 }
 
+export { AUTOMOD_CONFIG };
+
 export default {
   checkMessage,
   AUTOMOD_CONFIG,
