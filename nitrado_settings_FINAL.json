@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "game": "arksa",
+    "timestamp": 1784371684,
+    "version": "3.0",
+    "description": "ARK Primal Descended PvE x50 - Ragnarok - Teljes tier rendszer"
+  },
+  "settings": {
+    "SessionName": "ARK Primal Descended PvE x50",
+    "map": "Ragnarok",
+    "ServerPVE": "true",
+    "MaxNumberOfPlayersInTribe": "10",
+    "ServerCrosshair": "true",
+    "AllowThirdPersonPlayer": "true",
+    "ShowMapPlayerLocation": "true",
+    "battleye": "true",
+    
+    "crossplay-enable-pc": "true",
+    "crossplay-enable-wingdk": "true",
+    "crossplay-enable-xsx": "true",
+    "crossplay-enable-ps5": "true",
+    
+    "OverrideOfficialDifficulty": "5.0",
+    "MaxDifficulty": "true",
+    
+    "XPMultiplier": "50.0",
+    "KillXPMultiplier": "1.5",
+    "HarvestXPMultiplier": "1.5",
+    "CraftXPMultiplier": "2.0",
+    "GenericXPMultiplier": "1.5",
+    "SpecialXPMultiplier": "2.0",
+    "ExplorerNoteXPMultiplier": "0.55",
+    "BossKillXPMultiplier": "5",
+    "AlphaKillXPMultiplier": "1.33",
+    "WildKillXPMultiplier": "1.25",
+    "CaveKillXPMultiplier": "1.33",
+    "TamedKillXPMultiplier": "0",
+    "UnclaimedKillXPMultiplier": "1",
+    
+    "HarvestAmountMultiplier": "50.0",
+    "HarvestHealthMultiplier": "3.0",
+    "ResourcesRespawnPeriodMultiplier": "0.3",
+    "ItemStackSizeMultiplier": "2.0",
+    
+    "TamingSpeedMultiplier": "15.0",
+    "DinoCharacterFoodDrainMultiplier": "2.0",
+    
+    "MatingIntervalMultiplier": "0.04",
+    "EggHatchSpeedMultiplier": "25.0",
+    "BabyMatureSpeedMultiplier": "25.0",
+    "BabyFoodConsumptionSpeedMultiplier": "2.0",
+    "BabyImprintAmountMultiplier": "25.0",
+    "BabyCuddleIntervalMultiplier": "0.04",
+    "BabyCuddleGracePeriodMultiplier": "2.0",
+    "BabyCuddleLoseImprintQualitySpeedMultiplier": "0.1",
+    "BabyImprintingStatScaleMultiplier": "2.0",
+    "LayEggIntervalMultiplier": "0.5",
+    "PoopIntervalMultiplier": "0.5",
+    
+    "PlayerCharacterWaterDrainMultiplier": "0.5",
+    "PlayerCharacterFoodDrainMultiplier": "0.5",
+    "PlayerCharacterStaminaDrainMultiplier": "0.5",
+    "PlayerCharacterHealthRecoveryMultiplier": "2.0",
+    "PlayerDamageMultiplier": "2.0",
+    "PlayerResistanceMultiplier": "0.75",
+    
+    "DinoDamageMultiplier": "2.0",
+    "DinoResistanceMultiplier": "0.75",
+    "DinoCharacterStaminaDrainMultiplier": "0.5",
+    "DinoCharacterHealthRecoveryMultiplier": "2.0",
+    "DinoHarvestingDamageMultiplier": "5.0",
+    
+    "StructureResistanceMultiplier": "2.0",
+    "PvEDinoDecayPeriodMultiplier": "5.0",
+    "TheMaxStructuresInRange": "10500",
+    "MaxPlatformSaddleStructureLimit": "500",
+    "PerPlatformMaxStructuresMultiplier": "500",
+    
+    "AlwaysAllowStructurePickup": "true",
+    "StructurePickupTimeAfterPlacement": "30",
+    "StructurePickupHoldDuration": "0.5",
+    
+    "SupplyCrateLootQualityMultiplier": "3.0",
+    "FishingLootQualityMultiplier": "3.0",
+    
+    "CropGrowthSpeedMultiplier": "10.0",
+    "CropDecaySpeedMultiplier": "0.5",
+    
+    "CustomRecipeEffectivenessMultiplier": "2.0",
+    "CustomRecipeSkillMultiplier": "2.0",
+    
+    "EnableCryoSicknessPVE": "false",
+    "EnableCryopodNerf": "false",
+    "CryopodNerfDuration": "0",
+    "CryopodNerfDamageMult": "1.0",
+    "CryopodNerfIncomingDamageMultPercent": "0",
+    
+    "AllowFlyerCarryPvE": "true",
+    "AllowFlyingStaminaRecovery": "true",
+    "bAllowUnlimitedRespecs": "true",
+    "AllowAnyoneBabyImprintCuddle": "true",
+    "DisableImprintDinoBuff": "true",
+    
+    "ShowFloatingDamageText": "true",
+    "AllowHitMarkers": "true",
+    "bUseCorpseLocator": "false",
+    
+    "AutoSavePeriodMinutes": "30",
+    "MaxTamedDinos": "5000",
+    "DestroyTamesOverLevel": "15000",
+    
+    "ImplantSuicideCD": "28800",
+    "KickIdlePlayersPeriod": "3600",
+    
+    "PreventTribeAlliances": "true",
+    "TribeNameChangeCooldown": "8640",
+    
+    "AllowRaidDinoFeeding": "true",
+    "RaidDinoCharacterFoodDrainMultiplier": "0.5",
+    
+    "IgnorePVPMountedWeaponryRestriction": "true",
+    "MaxCosmoWeaponAmmo": "-1",
+    "CosmoWeaponAmmoReloadAmount": "-1",
+    
+    "LimitBunkersPerTribe": "true",
+    "LimitBunkersPerTribeNum": "3",
+    "AllowRidingDinosInsideBunkers": "true",
+    "AllowDinoAIInsideBunkers": "true",
+    "MinDistanceBetweenBunkers": "3000.0",
+    
+    "UseItemDupeCheck": "true",
+    "bDisableFriendlyFire": "false",
+    "PvPStructureDecay": "true",
+    "PvPDinoDecay": "true",
+    "PreventOfflinePvP": "true",
+    "PreventOfflinePvPInterval": "800",
+    
+    "official_rates": "disabled",
+    "EventColors": "none",
+    "ActiveEvent": "false"
+  }
+}
