@@ -190,7 +190,37 @@ process.on('uncaughtException', error => {
 
 // Bot bejelentkezés
 client.login(process.env.DISCORD_TOKEN).catch(error => {
-  logger.error('Nem sikerült bejelentkezni:', error);
+  if (error.message && error.message.includes('disallowed intents')) {
+    logger.error('❌ HIBA: Privileged Intents nincsenek bekapcsolva!');
+    console.log('');
+    console.log('============================================================');
+    console.log('  A bot 3 privilegizált Intent-et igényel, amit a Discord');
+    console.log('  Developer Portal-on KÉZZEL be kell kapcsolni!');
+    console.log('============================================================');
+    console.log('');
+    console.log('  Javítás lépései:');
+    console.log('  1. Menj: https://discord.com/developers/applications');
+    console.log('  2. Válaszd ki az alkalmazásod');
+    console.log('  3. Bal menü: "Bot" fül');
+    console.log('  4. Görgess le "Privileged Gateway Intents" részhez');
+    console.log('  5. Kapcsold BE mind a hármat:');
+    console.log('     [ ] PRESENCE INTENT');
+    console.log('     [ ] SERVER MEMBERS INTENT');
+    console.log('     [ ] MESSAGE CONTENT INTENT');
+    console.log('  6. Kattints: "Save Changes"');
+    console.log('  7. Indítsd újra a botot: npm start');
+    console.log('');
+    console.log('============================================================');
+    console.log('');
+  } else if (error.message && error.message.includes('token')) {
+    logger.error('❌ HIBA: Érvénytelen Discord Token!');
+    console.log('');
+    console.log('  Ellenőrizd a DISCORD_TOKEN értékét a .env fájlban.');
+    console.log('  Generálj új tokent: Developer Portal → Bot → Reset Token');
+    console.log('');
+  } else {
+    logger.error('Nem sikerült bejelentkezni:', error);
+  }
   process.exit(1);
 });
 
