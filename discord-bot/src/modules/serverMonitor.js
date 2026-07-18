@@ -23,9 +23,19 @@ import { GameDig } from 'gamedig';
 import { WildArkEmbed } from '../utils/embedBuilder.js';
 import logger from '../utils/logger.js';
 
-// Az élő státusz embed üzenet-referenciája (frissítéshez kell)
-let statusChannel = null;
-let statusMessage = null;
+// Az élő státusz embed üzenet-referenciája (frissítéshez kell).
+// FONTOS: a guild ID-t is eltároljuk, mert hosszú ideig futó
+// setInterval mellett a discord.js belső "sweeper" mechanizmusa
+// időszakosan kitisztíthatja a channel cache-t - ha a Message
+// objektum .channel getter-e (ami mindig client.channels.resolve()-t
+// hív) nem talál semmit, DiscordjsError [ChannelNotCached] dobódik.
+// Ezért minden frissítéskor FRISSEN lekérjük a csatornát a guild-ből
+// (nem a régi Message.channel getterre bízzuk), és ha a csatorna
+// maga sincs a cache-ben, guild.channels.fetch()-csel API-hívással
+// visszaszerezzük.
+let statusMessageId = null;
+let statusChannelId = null;
+let statusGuildId = null;
 let refreshInterval = null;
 
 /**
@@ -173,7 +183,7 @@ export async function setupServerMonitor(guild) {
   logger.info('📊 Szerver státusz monitor beállítása...');
 
   try {
-    const channel = guild.channels.cache.find(ch => ch.name === '📊-szerver-státusz');
+    const channel = await resolveStatusChannel(guild);
 
     if (!channel) {
       logger.warn('⚠️ Szerver státusz csatorna nem található, kihagyva.');
@@ -191,17 +201,25 @@ export async function setupServerMonitor(guild) {
              msg.embeds[0]?.title === '📊 WildArk Szerver Státusz'
     );
 
+    let message;
     if (existing) {
-      statusMessage = await existing.edit({ embeds: [embed] });
+      message = await existing.edit({ embeds: [embed] });
       logger.success('✅ Meglévő szerver státusz üzenet frissítve.');
     } else {
-      statusMessage = await channel.send({ embeds: [embed] });
+      message = await channel.send({ embeds: [embed] });
       logger.success('✅ Szerver státusz panel létrehozva.');
     }
 
-    statusChannel = channel;
-    startAutoRefresh();
-    return statusMessage;
+    // Csak ID-kat tárolunk, nem magukat az objektumokat - így minden
+    // frissítéskor FRISSEN kérjük le a csatornát/guildet a cache-ből
+    // (vagy API hívással, ha közben kikerült onnan), sosem hagyatkozunk
+    // egy régi Message/Channel objektum belső getter-eire.
+    statusMessageId = message.id;
+    statusChannelId = channel.id;
+    statusGuildId = guild.id;
+
+    startAutoRefresh(guild.client);
+    return message;
 
   } catch (error) {
     logger.error('Hiba a szerver státusz monitor beállításakor:', error);
@@ -210,10 +228,28 @@ export async function setupServerMonitor(guild) {
 }
 
 /**
+ * Státusz csatorna megkeresése/lekérése a guild-ből.
+ * @param {Guild} guild
+ * @returns {Promise<TextChannel|null>}
+ */
+async function resolveStatusChannel(guild) {
+  return guild.channels.cache.find(ch => ch.name === '📊-szerver-státusz') ?? null;
+}
+
+/**
  * Periodikus frissítés indítása (setInterval). Ha már fut egy
  * korábbi timer, előbb leállítjuk, hogy ne halmozódjanak.
+ *
+ * Minden ütemezett futásnál FRISSEN kérjük le a guild -> channel ->
+ * message láncot a client cache-éből (szükség esetén API fetch-csel),
+ * hogy elkerüljük a "ChannelNotCached" / "Unknown Message" hibákat,
+ * amik egy hosszú ideig élő, elévült objektum-referencia használatából
+ * adódnának.
+ *
+ * @param {Client} client - Discord Client (a guild/channel/message
+ *   friss lekéréséhez van rá szükség minden tick-nél)
  */
-function startAutoRefresh() {
+function startAutoRefresh(client) {
   if (refreshInterval) {
     clearInterval(refreshInterval);
   }
@@ -222,31 +258,54 @@ function startAutoRefresh() {
   const intervalMs = Math.max(minutes, 0.5) * 60 * 1000;
 
   refreshInterval = setInterval(async () => {
-    if (!statusMessage) return;
+    if (!statusMessageId || !statusChannelId || !statusGuildId) return;
 
     try {
+      // 1. Guild friss lekérése (cache-ből, ez ritkán esik ki)
+      const guild = client.guilds.cache.get(statusGuildId);
+      if (!guild) {
+        logger.warn('⚠️ Guild nem található a cache-ben, státusz frissítés kihagyva.');
+        return;
+      }
+
+      // 2. Csatorna friss lekérése - ha kikerült a cache-ből,
+      // fetch()-csel API-hívással visszaszerezzük
+      let channel = guild.channels.cache.get(statusChannelId);
+      if (!channel) {
+        channel = await guild.channels.fetch(statusChannelId).catch(() => null);
+      }
+      if (!channel) {
+        logger.warn('⚠️ Státusz csatorna nem található (törölve?), automatikus frissítés leáll.');
+        clearInterval(refreshInterval);
+        refreshInterval = null;
+        return;
+      }
+
       const result = await queryServer();
       const embed = buildStatusEmbed(result);
-      await statusMessage.edit({ embeds: [embed] });
-    } catch (error) {
-      // Discord API 10008 = "Unknown Message" - valaki törölte a
-      // panel-üzenetet Discord-on. Ez korábban örökre megismétlődő
-      // hibát okozott minden percben, mert semmi nem hozott létre
-      // helyette új üzenetet. Most self-healing: ha törölték,
-      // létrehozunk egy friss panel-üzenetet a helyén.
-      if (error.code === 10008 && statusChannel) {
-        logger.warn('⚠️ A státusz üzenetet törölték - új panel létrehozása...');
-        try {
-          const result = await queryServer();
-          const embed = buildStatusEmbed(result);
-          statusMessage = await statusChannel.send({ embeds: [embed] });
+
+      // 3. Üzenet szerkesztése ID alapján, a FRISS channel objektumon -
+      // ha az üzenetet törölték (Unknown Message / 10008), a catch-ág
+      // ezt kezeli és újat hoz létre.
+      try {
+        await channel.messages.edit(statusMessageId, { embeds: [embed] });
+      } catch (editError) {
+        const isMissingMessage = editError.code === 10008 ||
+                                  editError.message?.includes('Unknown Message');
+
+        if (isMissingMessage) {
+          logger.warn('⚠️ A státusz üzenetet törölték - új panel létrehozása...');
+          const newMessage = await channel.send({ embeds: [embed] });
+          statusMessageId = newMessage.id;
+          statusChannelId = channel.id;
           logger.success('✅ Új szerver státusz panel létrehozva a törölt helyett.');
-        } catch (recreateError) {
-          logger.error('Nem sikerült újra létrehozni a státusz panelt:', recreateError);
+        } else {
+          throw editError;
         }
-      } else {
-        logger.error('Hiba az automatikus státusz frissítés során:', error);
       }
+
+    } catch (error) {
+      logger.error('Hiba az automatikus státusz frissítés során:', error);
     }
   }, intervalMs);
 
