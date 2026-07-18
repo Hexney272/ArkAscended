@@ -26,6 +26,11 @@ Ez a repository tartalmazza az **ARK: Survival Ascended PvE x50** szerver teljes
 - WBUI2, SmartTurrets, FPS Boost Buttons
 - És még 22 további mod!
 
+### DLC Lények Spawn (Opcionális):
+- **Ajánlott Mod:** DLC Spawns (CurseForge)
+- **Alternatíva:** Manuális konfiguráció a Game.ini-ben
+- **FONTOS:** A DLC-ket meg kell vásárolnod a használathoz!
+
 ## 🚀 Gyors Kezdés
 
 1. **Töltsd le** a `GameUserSettings.ini` és `Game.ini` fájlokat

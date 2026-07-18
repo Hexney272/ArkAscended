@@ -57,6 +57,13 @@ A Nitrado ARK: Survival Ascended szerverek a **CurseForge** modokat használják
 | 2 | **EOS ID Helper (CrossPlay)** | Crossplay ID kezelés | MAGAS |
 | 3 | **WBUI2** | UI információs rendszer | MAGAS |
 
+#### 🦖 1.5 DLC Lények (Opcionális - Ajánlott)
+| # | Mod Név | Leírás | Prioritás |
+|---|---------|--------|-----------|
+| 3.5 | **DLC Spawns** | Minden DLC lény spawn-olása más térképeken | KÖZEPES |
+
+**MEGJEGYZÉS:** A DLC-ket meg kell vásárolnod, hogy használhasd a lényeket! A mod csak a spawn-olást teszi lehetővé.
+
 #### 🔧 2. Játékmenet Modok
 | # | Mod Név | Leírás |
 |---|---------|--------|
@@ -359,6 +366,46 @@ A **WindowsServer** mappában a következő fájloknak kell lenniük:
 4. **FONTOS:** Az új mod a lista végére kerül - ez általában rendben van
 5. Indítsd újra a szervert
 6. Teszteld, hogy működik-e az új mod
+
+---
+
+## 🦖 DLC Lények Hozzáadása (Opcionális)
+
+### Opció 1: Mod Használata (AJÁNLOTT)
+
+A legegyszerűbb módszer a **DLC Spawns** mod telepítése a CurseForge-ról:
+
+1. Nitrado Control Panel → **Mods**
+2. Keress rá: **"DLC Spawns"**
+3. Telepítsd a mod-ot
+4. Indítsd újra a szervert
+5. Add ki a parancsot: `destroywilddinos`
+
+**Előnyök:**
+- ✅ Automatikus - minden DLC lény spawn-ol
+- ✅ Optimalizált spawn súlyok
+- ✅ Egyszerű telepítés
+- ✅ Frissítések automatikusan jönnek
+
+**FONTOS:** A DLC-ket meg kell vásárolnod, hogy használhasd (háziasítás, breeding) a lényeket!
+
+### Opció 2: Manuális Konfiguráció
+
+A `Game.ini` fájl már tartalmaz példa spawn konfigurációkat:
+- Scorched Earth lények (Wyvern, Mantis, Rock Elemental)
+- Aberration lények (Ravager, Rock Drake, Reaper)
+- Extinction lények (Gacha, Managarmr, Velonasaur)
+- Genesis lények (Magmasaur, Bloodstalker, Astrocetus)
+- Fjordur lények (Fenrir, Andrewsarchus)
+
+Ezek alapértelmezetten **ki vannak kommentezve** - ha használni akarod őket:
+1. Nyisd meg a `Game.ini` fájlt
+2. Keresd meg a `; === DLC LÉNYEK HOZZÁADÁSA` részt
+3. Távolítsd el a `;` karaktereket a spawn sorok elől
+4. Mentsd és töltsd fel a fájlt
+5. Indítsd újra a szervert
+
+**Figyelem:** Manuális konfiguráció bonyolultabb és több karbantartást igényel!
 
 ---
 
