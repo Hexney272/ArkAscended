@@ -1,0 +1,28 @@
+{
+  "name": "wildark-discord-builder",
+  "version": "1.0.0",
+  "description": "WildArk Discord Server Builder - Automated server setup with complete branding",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "setup": "node src/commands/setup.js"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "wildark",
+    "server-builder",
+    "automation"
+  ],
+  "author": "WildArk Team",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
