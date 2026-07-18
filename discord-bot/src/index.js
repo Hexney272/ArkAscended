@@ -60,6 +60,25 @@ client.once('ready', async () => {
   // Slash commands regisztrálása
   await registerCommands();
 
+  // Szerver státusz monitor automatikus (re)indítása.
+  // FONTOS: ez korábban CSAK a /setup parancs futtatásakor indult
+  // el, ezért bot-újraindítás után a panel "megfagyott" és nem
+  // frissült tovább, amíg valaki nem futtatta újra a /setup-ot.
+  // Mostantól minden induláskor automatikusan folytatja a meglévő
+  // panel frissítését, nem kell hozzá /setup.
+  try {
+    const { setupServerMonitor } = await import('./modules/serverMonitor.js');
+    const guild = client.guilds.cache.get(process.env.GUILD_ID);
+
+    if (guild) {
+      await setupServerMonitor(guild);
+    } else {
+      logger.warn('📊 Szerver monitor auto-indítás kihagyva: GUILD_ID nem található a cache-ben.');
+    }
+  } catch (error) {
+    logger.error('Hiba a szerver monitor automatikus indításakor:', error);
+  }
+
   // Status beállítása
   client.user.setActivity('WildArk Server Builder 🦖', { type: 'WATCHING' });
 });
