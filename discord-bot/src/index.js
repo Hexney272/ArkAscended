@@ -47,6 +47,16 @@ client.once('ready', async () => {
   logger.success(`Bejelentkezve mint: ${client.user.tag}`);
   logger.info(`Szerverek száma: ${client.guilds.cache.size}`);
 
+  // Diagnosztika: mutassuk meg induláskor, hogy a bot milyen ARK
+  // szerver-adatokat lát a .env-ből. Ha ez üres, a .env módosítása
+  // NEM lesz érvényes amíg nem indítod újra a botot (a dotenv csak
+  // induláskor egyszer olvassa be a fájlt).
+  if (process.env.ARK_SERVER_HOST) {
+    logger.info(`📊 ARK szerver monitor: ${process.env.ARK_SERVER_HOST}:${process.env.ARK_SERVER_QUERY_PORT || '27015'}`);
+  } else {
+    logger.warn('📊 ARK szerver monitor: ARK_SERVER_HOST nincs beállítva (.env) - a státusz "ismeretlen" lesz.');
+  }
+
   // Slash commands regisztrálása
   await registerCommands();
 
