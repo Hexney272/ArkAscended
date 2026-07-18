@@ -62,30 +62,51 @@ export class WildArkEmbed extends EmbedBuilder {
       .setFooter({ text: 'WildArk Discord Builder' });
   }
 
-  // Welcome embed
+  // Welcome embed - a gateway kategóriában látja mindenki, nyelvtől
+  // függetlenül, MIELŐTT bármi más csatornát látna. Ezért kétnyelvű.
   static welcome(member) {
     return new EmbedBuilder()
       .setColor(COLORS.PRIMARY)
       .setTitle(`${EMOJIS.WELCOME} Üdvözlünk a WildArk közösségében!`)
       .setDescription(
         `Szia ${member}! 🦖\n\n` +
-        `Köszönjük, hogy csatlakoztál hozzánk!\n\n` +
-        `🌐 Elsőként válassz nyelvet a #🌐-nyelv-language csatornában\n` +
-        `📜 Olvasd el a szabályzatot\n` +
-        `🎭 Válassz rangot magadnak\n` +
-        `💬 Mutatkozz be az általános csatornában\n\n` +
-        `Jó játékot kívánunk! 🎮\n\n` +
-        `─────────────────────\n` +
-        `Hi ${member}! Please pick a language in #🌐-nyelv-language ` +
-        `so the bot can talk to you in English or Hungarian.`
+        `Kérlek válassz nyelvet a #🌐-nyelv-language csatornában, ` +
+        `hogy hozzáférj a szerver tartalmához!\n\n` +
+        `─────────────────────\n\n` +
+        `Hi ${member}! 🦖\n\n` +
+        `Please pick a language in #🌐-nyelv-language to unlock ` +
+        `access to the rest of the server!`
       )
       .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
       .setTimestamp()
       .setFooter({ text: 'WildArk Discord Builder' });
   }
 
-  // Ticket embed
-  static ticket() {
+  // Ticket embed (HU/EN)
+  static ticket(lang = 'hu') {
+    if (lang === 'en') {
+      return new EmbedBuilder()
+        .setColor(COLORS.PRIMARY)
+        .setTitle(`${EMOJIS.TICKET} Support Ticket System`)
+        .setDescription(
+          `Need help? Open a ticket!\n\n` +
+          `**How does it work?**\n` +
+          `1️⃣ React with ${EMOJIS.TICKET}\n` +
+          `2️⃣ A private channel is created automatically\n` +
+          `3️⃣ Describe your issue\n` +
+          `4️⃣ Staff will respond shortly\n\n` +
+          `**Use this for:**\n` +
+          `• Technical issues\n` +
+          `• In-game help\n` +
+          `• Admin questions\n` +
+          `• Ban appeals\n` +
+          `• Other support\n\n` +
+          `⚠️ **Do not use this for spam or unnecessary tickets!**`
+        )
+        .setTimestamp()
+        .setFooter({ text: 'WildArk Discord Builder' });
+    }
+
     return new EmbedBuilder()
       .setColor(COLORS.PRIMARY)
       .setTitle(`${EMOJIS.TICKET} Support Ticket Rendszer`)
@@ -108,8 +129,25 @@ export class WildArkEmbed extends EmbedBuilder {
       .setFooter({ text: 'WildArk Discord Builder' });
   }
 
-  // Reaction Roles embed
-  static reactionRoles() {
+  // Reaction Roles embed (HU/EN)
+  static reactionRoles(lang = 'hu') {
+    if (lang === 'en') {
+      return new EmbedBuilder()
+        .setColor(COLORS.PRIMARY)
+        .setTitle(`${EMOJIS.VIP} Pick Your Role!`)
+        .setDescription(
+          `React below to get a role!\n\n` +
+          `🦖 **Primal Chaos** - Primal Chaos mod fan\n` +
+          `🌊 **Primal Descended** - Primal Descended mod fan\n` +
+          `⚔️ **Tides of Fortune** - Tides of Fortune interested\n\n` +
+          `🔔 **Notifications** - Event and boss alerts\n` +
+          `📢 **News** - Important news alerts\n\n` +
+          `💜 **Roles are added automatically!**`
+        )
+        .setTimestamp()
+        .setFooter({ text: 'WildArk Discord Builder' });
+    }
+
     return new EmbedBuilder()
       .setColor(COLORS.PRIMARY)
       .setTitle(`${EMOJIS.VIP} Válassz Rangot!`)
@@ -126,8 +164,43 @@ export class WildArkEmbed extends EmbedBuilder {
       .setFooter({ text: 'WildArk Discord Builder' });
   }
 
-  // Rules embed
-  static rules() {
+  // Rules embed (HU/EN)
+  static rules(lang = 'hu') {
+    if (lang === 'en') {
+      return new EmbedBuilder()
+        .setColor(COLORS.PRIMARY)
+        .setTitle(`${EMOJIS.RULES} WildArk Rules`)
+        .setDescription(
+          `**1️⃣ Respect and courtesy**\n` +
+          `Be respectful to everyone. Harassment, racism and hate speech are forbidden.\n\n` +
+
+          `**2️⃣ Spam and flooding**\n` +
+          `Don't spam or flood. Use the appropriate channels.\n\n` +
+
+          `**3️⃣ NSFW content**\n` +
+          `Sharing NSFW (18+) content is forbidden.\n\n` +
+
+          `**4️⃣ Advertising**\n` +
+          `Advertising other servers or products only with permission.\n\n` +
+
+          `**5️⃣ Nickname and avatar**\n` +
+          `Use an appropriate name and profile picture.\n\n` +
+
+          `**6️⃣ Voice chat**\n` +
+          `Don't overuse soundboards or sound effects.\n\n` +
+
+          `**7️⃣ Staff decisions**\n` +
+          `Staff decisions are final. Disputes only via tickets.\n\n` +
+
+          `**8️⃣ In-game rules**\n` +
+          `Follow the server's gameplay rules.\n\n` +
+
+          `⚠️ **Breaking the rules may result in a warning, mute or ban.**`
+        )
+        .setTimestamp()
+        .setFooter({ text: 'WildArk Discord Builder' });
+    }
+
     return new EmbedBuilder()
       .setColor(COLORS.PRIMARY)
       .setTitle(`${EMOJIS.RULES} WildArk Szabályzat`)

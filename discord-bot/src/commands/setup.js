@@ -157,24 +157,38 @@ export const setupCommand = {
 };
 
 /**
- * Szabályzat küldése
+ * Szabályzat küldése mindkét nyelvi csatornába
  * @param {Guild} guild - Discord Guild
  */
 async function sendRules(guild) {
-  const rulesChannel = guild.channels.cache.find(ch => ch.name === '📜-szabályzat');
+  await sendRulesForLang(guild, '📜-szabályzat', 'hu');
+  await sendRulesForLang(guild, '📜-rules', 'en');
+}
 
-  if (rulesChannel) {
-    const embed = WildArkEmbed.rules();
+/**
+ * Szabályzat küldése egy adott nyelvi csatornába.
+ * @param {Guild} guild
+ * @param {string} channelName
+ * @param {string} lang - 'hu' vagy 'en'
+ */
+async function sendRulesForLang(guild, channelName, lang) {
+  const rulesChannel = guild.channels.cache.find(ch => ch.name === channelName);
 
-    // Ha a szabályzat már ki van küldve, ne duplikáljuk
-    if (await panelExists(rulesChannel, embed.data.title)) {
-      logger.warn('⚠️ Szabályzat már ki van küldve, kihagyva.');
-      return;
-    }
-
-    await rulesChannel.send({ embeds: [embed] });
-    logger.success('✅ Szabályzat elküldve');
+  if (!rulesChannel) {
+    logger.warn(`⚠️ Szabályzat csatorna nem található: ${channelName}`);
+    return;
   }
+
+  const embed = WildArkEmbed.rules(lang);
+
+  // Ha a szabályzat már ki van küldve, ne duplikáljuk
+  if (await panelExists(rulesChannel, embed.data.title)) {
+    logger.warn(`⚠️ Szabályzat (${lang}) már ki van küldve, kihagyva.`);
+    return;
+  }
+
+  await rulesChannel.send({ embeds: [embed] });
+  logger.success(`✅ Szabályzat elküldve (${lang})`);
 }
 
 /**
@@ -193,39 +207,40 @@ async function sendLanguageSetup(guild) {
 }
 
 /**
- * Welcome setup üzenet
+ * Welcome setup banner - a gateway (mindenki által látott) welcome
+ * csatornába, ezért KÉTNYELVŰ (a tag még nem választott nyelvet).
  * @param {Guild} guild - Discord Guild
  */
 async function sendWelcomeSetup(guild) {
-  const welcomeChannel = guild.channels.cache.find(ch => ch.name === '👋-üdvözlés');
+  const welcomeChannel = guild.channels.cache.find(ch => ch.name === '👋-welcome');
 
-  if (welcomeChannel) {
-    const embed = new WildArkEmbed()
-      .setTitle('👋 Üdvözöljük a WildArk közösségében!')
-      .setDescription(
-        `🦖 **WildArk - ARK: Survival Ascended Szerver**\n\n` +
-        `Üdvözlünk a hivatalos WildArk Discord szerveren!\n\n` +
-        `Egy szerveren játszunk (Ragnarok, PvE x50), amin ezek a modok futnak:\n` +
-        `• 🦖 **Primal Chaos**\n` +
-        `• 🌊 **Primal Descended**\n` +
-        `• ⚔️ **Tides of Fortune**\n\n` +
-        `📜 Először olvasd el a szabályzatot!\n` +
-        `🎭 Válassz rangot a reakciókkal!\n` +
-        `💬 Csatlakozz a közösséghez!\n\n` +
-        `**Jó játékot és szórakozást! 🎮**`
-      )
-      .setColor(0x9333EA)
-      .setImage('https://i.imgur.com/wildark-banner.png'); // Placeholder
-
-    // Ha a welcome banner már ki van küldve, ne duplikáljuk
-    if (await panelExists(welcomeChannel, embed.data.title)) {
-      logger.warn('⚠️ Welcome banner már ki van küldve, kihagyva.');
-      return;
-    }
-
-    await welcomeChannel.send({ embeds: [embed] });
-    logger.success('✅ Welcome üzenet elküldve');
+  if (!welcomeChannel) {
+    logger.warn('⚠️ Welcome csatorna (👋-welcome) nem található!');
+    return;
   }
+
+  const embed = new WildArkEmbed()
+    .setTitle('👋 Üdvözöljük a WildArk közösségében! / Welcome!')
+    .setDescription(
+      `🦖 **WildArk - ARK: Survival Ascended**\n\n` +
+      `Egy szerveren játszunk (Ragnarok, PvE x50), amin a ` +
+      `Primal Chaos, Primal Descended és Tides of Fortune modok futnak.\n\n` +
+      `🌐 **Válassz nyelvet a #🌐-nyelv-language csatornában** a folytatáshoz!\n\n` +
+      `─────────────────────\n\n` +
+      `We play on one server (Ragnarok, PvE x50) running the ` +
+      `Primal Chaos, Primal Descended and Tides of Fortune mods.\n\n` +
+      `🌐 **Pick a language in #🌐-nyelv-language to continue!**`
+    )
+    .setColor(0x9333EA);
+
+  // Ha a welcome banner már ki van küldve, ne duplikáljuk
+  if (await panelExists(welcomeChannel, embed.data.title)) {
+    logger.warn('⚠️ Welcome banner már ki van küldve, kihagyva.');
+    return;
+  }
+
+  await welcomeChannel.send({ embeds: [embed] });
+  logger.success('✅ Welcome üzenet elküldve');
 }
 
 /**

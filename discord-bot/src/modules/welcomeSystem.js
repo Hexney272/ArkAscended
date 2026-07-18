@@ -7,14 +7,15 @@ import { WildArkEmbed } from '../utils/embedBuilder.js';
 import logger from '../utils/logger.js';
 
 /**
- * Üdvözlő üzenet küldése új membernek
+ * Üdvözlő üzenet küldése új membernek - a gateway (mindenki által
+ * látott) welcome csatornába, MIELŐTT nyelvet választana.
  * @param {GuildMember} member - Új member
  */
 export async function sendWelcomeMessage(member) {
   try {
-    // Welcome csatorna keresése
+    // Welcome csatorna keresése (gateway kategória)
     const welcomeChannel = member.guild.channels.cache.find(
-      ch => ch.name === '👋-üdvözlés'
+      ch => ch.name === '👋-welcome'
     );
 
     if (!welcomeChannel) {
@@ -110,7 +111,7 @@ async function updateMemberCount(guild) {
 export async function sendGoodbyeMessage(member) {
   try {
     const welcomeChannel = member.guild.channels.cache.find(
-      ch => ch.name === '👋-üdvözlés'
+      ch => ch.name === '👋-welcome'
     );
 
     if (!welcomeChannel) {

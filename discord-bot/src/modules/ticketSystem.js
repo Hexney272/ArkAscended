@@ -16,7 +16,7 @@ const activeTickets = new Map();
 let ticketCounter = 1;
 
 /**
- * Ticket rendszer beállítása
+ * Ticket rendszer beállítása - HU és EN csatornákban külön panel.
  * @param {Guild} guild - Discord Guild
  * @param {Map} roles - Létrehozott rangok
  */
@@ -24,38 +24,52 @@ export async function setupTicketSystem(guild, roles) {
   logger.info('🎫 Ticket rendszer beállítása...');
 
   try {
-    // Ticket csatorna keresése
-    const ticketChannel = guild.channels.cache.find(
-      ch => ch.name === '📫-ticket-központ'
-    );
+    const huChannel = guild.channels.cache.find(ch => ch.name === '📫-ticket-központ');
+    const enChannel = guild.channels.cache.find(ch => ch.name === '📫-ticket-center');
 
-    if (!ticketChannel) {
-      logger.error('Ticket csatorna nem található!');
-      return false;
+    let huResult = false;
+    let enResult = false;
+
+    if (huChannel) {
+      huResult = await sendTicketPanel(huChannel, 'hu');
+    } else {
+      logger.warn('⚠️ Magyar ticket csatorna (📫-ticket-központ) nem található!');
     }
 
-    // Ticket embed
-    const embed = WildArkEmbed.ticket();
-
-    // Ha a panel már ki van küldve, ne duplikáljuk (pl. /setup újrafuttatásakor)
-    if (await panelExists(ticketChannel, embed.data.title)) {
-      logger.warn('⚠️ Ticket panel már létezik, kihagyva.');
-      return false;
+    if (enChannel) {
+      enResult = await sendTicketPanel(enChannel, 'en');
+    } else {
+      logger.warn('⚠️ English ticket channel (📫-ticket-center) not found!');
     }
 
-    // Üzenet küldése
-    const message = await ticketChannel.send({ embeds: [embed] });
-
-    // Ticket reakció hozzáadása
-    await message.react('🎫');
-
-    logger.success('✅ Ticket panel létrehozva!');
-    return message;
+    return huResult || enResult;
 
   } catch (error) {
     logger.error('Hiba a ticket rendszer beállításakor:', error);
     return false;
   }
+}
+
+/**
+ * Egy nyelvű ticket panel kiküldése egy csatornába.
+ * @param {TextChannel} channel
+ * @param {string} lang - 'hu' vagy 'en'
+ * @returns {Promise<Message|false>}
+ */
+async function sendTicketPanel(channel, lang) {
+  const embed = WildArkEmbed.ticket(lang);
+
+  // Ha a panel már ki van küldve, ne duplikáljuk (pl. /setup újrafuttatásakor)
+  if (await panelExists(channel, embed.data.title)) {
+    logger.warn(`⚠️ Ticket panel (${lang}) már létezik, kihagyva.`);
+    return false;
+  }
+
+  const message = await channel.send({ embeds: [embed] });
+  await message.react('🎫');
+
+  logger.success(`✅ Ticket panel létrehozva (${lang}): ${channel.name}`);
+  return message;
 }
 
 /**
@@ -65,6 +79,12 @@ export async function setupTicketSystem(guild, roles) {
  */
 export async function handleTicketReaction(reaction, user) {
   try {
+    // Csak a ticket-panel csatornákból induljon (HU vagy EN)
+    const channelName = reaction.message.channel.name;
+    if (channelName !== '📫-ticket-központ' && channelName !== '📫-ticket-center') {
+      return;
+    }
+
     // Reakció eltávolítása
     await reaction.users.remove(user.id);
 

@@ -55,9 +55,11 @@ export async function setupLanguageSelector(guild, channel) {
       .setTitle('🌐 Válassz nyelvet! / Choose your language!')
       .setDescription(
         `Kattints egy reakcióra a nyelv kiválasztásához.\n` +
-        `A bot ezen a nyelven fog írni neked (üdvözlés, ticket).\n\n` +
+        `Ez feloldja a megfelelő nyelvű csatornák elérését, és a bot ` +
+        `ezen a nyelven fog írni neked (üdvözlés, ticket).\n\n` +
         `React below to choose your language.\n` +
-        `The bot will speak to you in that language (welcome, tickets).\n\n` +
+        `This unlocks access to the matching language channels, and ` +
+        `the bot will speak to you in that language (welcome, tickets).\n\n` +
         `🇭🇺 **Magyar**\n` +
         `🇬🇧 **English**`
       )

@@ -70,6 +70,11 @@ export async function setupPermissions(guild, roles) {
     logger.success('✅ Everyone jogosultságok beállítva');
 
     // Bot rangok permission-jei
+    // MEGJEGYZÉS: a '🤖 Bot' rang jelenleg dekoratív - a kód sehol
+    // nem rendeli hozzá a bot saját felhasználójához. A bot saját
+    // láthatóságát a categoryBuilder.js biztosítja explicit módon
+    // (guild.members.me-re állított permission overwrite minden
+    // rejtett kategórián), ettől függetlenül.
     const botRole = roles.get('🤖 Bot');
     if (botRole) {
       await botRole.setPermissions([

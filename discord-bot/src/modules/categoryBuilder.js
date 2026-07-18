@@ -1,21 +1,49 @@
 /**
  * Category Builder Module
- * Kategóriák létrehozása a szerverhez
+ * Kategóriák létrehozása a szerverhez + NYELVI LÁTHATÓSÁG.
+ *
+ * Minden kategóriának van egy `visibility` mezője a structure.js-ben:
+ * - 'gateway': mindenki látja (@everyone) - ez a belépési pont
+ * - 'hu' / 'en': csak a megfelelő nyelvi rang + staff látja
+ * - 'shared': bárki látja, akinek VAN nyelvi rangja (hu VAGY en)
+ * - 'staff': csak staff rangok látják
+ * - nincs megadva: nem nyúlunk a láthatósághoz (marad az alap)
+ *
+ * FONTOS Discord permission-viselkedés, amire ez épül: ha egy
+ * csatornán NINCS explicit permission overwrite egy adott role-ra,
+ * az a role a SZÜLŐ KATEGÓRIÁTÓL örökli a jogosultságot. A
+ * channelBuilder.js csak azokat a biteket állítja be csatorna-
+ * szinten, amik a structure.js channelData.permissions mezőjében
+ * explicit szerepelnek (pl. "ne írhasson mindenki") - a ViewChannel
+ * bitet csatorna-szinten sosem nyúljuk, így az mindig a kategóriától
+ * öröklődik. Ezért elég A KATEGÓRIÁN beállítani a nyelvi láthatóságot,
+ * az összes alatta lévő csatornára automatikusan érvényes lesz.
  */
 
 import { ChannelType } from 'discord.js';
 import { SERVER_STRUCTURE } from '../config/structure.js';
+import { createLanguageRoles } from './languageSystem.js';
 import logger from '../utils/logger.js';
+
+const STAFF_ROLE_NAMES = ['👑 Founder', '🔴 Admin', '🟠 Moderator', '🟡 Helper'];
 
 /**
  * Összes kategória létrehozása
  * @param {Guild} guild - Discord Guild object
- * @param {Map} roles - Létrehozott rangok
+ * @param {Map} roles - Létrehozott rangok (staff rangokhoz)
  * @returns {Map} - Létrehozott kategóriák
  */
 export async function buildCategories(guild, roles) {
   logger.info('📁 Kategóriák építése...');
-  
+
+  // A nyelvi rangoknak MÁR LÉTEZNIÜK KELL, mielőtt a kategória-szintű
+  // láthatóságot beállítjuk rájuk - ezért itt, a kategória-építés
+  // elején biztosítjuk őket (nem várunk meg a /setup későbbi,
+  // nyelvválasztó-panel lépésére).
+  await createLanguageRoles(guild);
+  const huRole = guild.roles.cache.find(r => r.name === '🇭🇺 Magyar');
+  const enRole = guild.roles.cache.find(r => r.name === '🇬🇧 English');
+
   const createdCategories = new Map();
 
   try {
@@ -39,10 +67,8 @@ export async function buildCategories(guild, roles) {
         logger.success(`✅ Kategória létrehozva: ${categoryData.name}`);
       }
 
-      // Staff kategória speciális permission-jei
-      if (categoryData.name.includes('STAFF')) {
-        await setStaffPermissions(category, guild, roles);
-      }
+      // Nyelvi/staff láthatóság beállítása a visibility mező alapján
+      await applyVisibility(category, categoryData.visibility, guild, roles, huRole, enRole);
 
       createdCategories.set(categoryData.name, category);
 
@@ -60,36 +86,104 @@ export async function buildCategories(guild, roles) {
 }
 
 /**
- * Staff kategória jogosultságainak beállítása
- * @param {Channel} category - Kategória channel
- * @param {Guild} guild - Discord Guild
- * @param {Map} roles - Rangok
+ * Kategória láthatóságának beállítása a visibility típus alapján.
+ * @param {CategoryChannel} category
+ * @param {string|undefined} visibility - 'gateway'|'hu'|'en'|'shared'|'staff'|undefined
+ * @param {Guild} guild
+ * @param {Map} roles - Staff rangok map-je (buildRoles eredménye)
+ * @param {Role|undefined} huRole
+ * @param {Role|undefined} enRole
  */
-async function setStaffPermissions(category, guild, roles) {
-  try {
-    // Everyone ne lássa
-    await category.permissionOverwrites.create(guild.roles.everyone, {
-      ViewChannel: false,
-    });
+async function applyVisibility(category, visibility, guild, roles, huRole, enRole) {
+  if (!visibility) {
+    // Nincs speciális láthatóság megadva - nem nyúlunk hozzá
+    return;
+  }
 
-    // Staff rangok lássák
-    const staffRoleNames = ['👑 Founder', '🔴 Admin', '🟠 Moderator', '🟡 Helper'];
-    
-    for (const roleName of staffRoleNames) {
-      const role = roles.get(roleName);
-      if (role) {
-        await category.permissionOverwrites.create(role, {
-          ViewChannel: true,
-          SendMessages: true,
-          ReadMessageHistory: true,
-        });
-      }
+  const everyone = guild.roles.everyone;
+
+  // A bot saját felhasználója MINDEN rejtett kategórián explicit
+  // ViewChannel jogot kap. Ez azért fontos, mert a bot esetleges
+  // OAuth meghívási jogaitól (Administrator vagy nem) függetlenül
+  // biztosítja, hogy a /setup panel-küldő lépései sose akadjanak el
+  // egy olyan kategóriánál, amit a bot saját magától elrejtett volna.
+  if (guild.members.me) {
+    await category.permissionOverwrites.create(guild.members.me, {
+      ViewChannel: true,
+      SendMessages: true,
+      ReadMessageHistory: true,
+      ManageMessages: true,
+      AddReactions: true,
+    });
+  }
+
+  try {
+    switch (visibility) {
+      case 'gateway':
+        // Mindenki látja - ez a belépési kategória (welcome + nyelvválasztó)
+        await category.permissionOverwrites.create(everyone, { ViewChannel: true });
+        break;
+
+      case 'hu':
+        await category.permissionOverwrites.create(everyone, { ViewChannel: false });
+        if (huRole) {
+          await category.permissionOverwrites.create(huRole, { ViewChannel: true });
+        }
+        await grantStaffView(category, roles);
+        break;
+
+      case 'en':
+        await category.permissionOverwrites.create(everyone, { ViewChannel: false });
+        if (enRole) {
+          await category.permissionOverwrites.create(enRole, { ViewChannel: true });
+        }
+        await grantStaffView(category, roles);
+        break;
+
+      case 'shared':
+        // Bárki látja, aki már választott nyelvet (hu VAGY en)
+        await category.permissionOverwrites.create(everyone, { ViewChannel: false });
+        if (huRole) {
+          await category.permissionOverwrites.create(huRole, { ViewChannel: true });
+        }
+        if (enRole) {
+          await category.permissionOverwrites.create(enRole, { ViewChannel: true });
+        }
+        await grantStaffView(category, roles);
+        break;
+
+      case 'staff':
+        await category.permissionOverwrites.create(everyone, { ViewChannel: false });
+        await grantStaffView(category, roles);
+        break;
+
+      default:
+        logger.warn(`⚠️ Ismeretlen visibility típus: ${visibility} (${category.name})`);
+        return;
     }
 
-    logger.success(`🔒 Staff jogosultságok beállítva: ${category.name}`);
+    logger.success(`🔒 Láthatóság beállítva (${visibility}): ${category.name}`);
 
   } catch (error) {
-    logger.error('Hiba a staff jogosultságok beállításakor:', error);
+    logger.error(`Hiba a kategória láthatóság beállításakor (${category.name}):`, error);
+  }
+}
+
+/**
+ * Staff rangoknak ViewChannel jog adása egy kategórián.
+ * @param {CategoryChannel} category
+ * @param {Map} roles
+ */
+async function grantStaffView(category, roles) {
+  for (const roleName of STAFF_ROLE_NAMES) {
+    const role = roles.get(roleName);
+    if (role) {
+      await category.permissionOverwrites.create(role, {
+        ViewChannel: true,
+        SendMessages: true,
+        ReadMessageHistory: true,
+      });
+    }
   }
 }
 

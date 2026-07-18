@@ -116,18 +116,15 @@ client.on('interactionCreate', async interaction => {
 });
 
 // Member join event (Welcome System)
+// FONTOS JAVÍTÁS: korábban ez közvetlenül küldte a welcome embedet,
+// megkerülve a welcomeSystem.js handleWelcome()-ját - ezért a
+// '⚪ Member' alapértelmezett rang SOSEM lett automatikusan
+// kiosztva új tagoknak. Mostantól a handleWelcome() fut, ami a
+// welcome üzenetet ÉS a default rangot is elintézi.
 client.on('guildMemberAdd', async member => {
   try {
-    const welcomeChannel = member.guild.channels.cache.find(
-      ch => ch.name === '👋-üdvözlés'
-    );
-
-    if (welcomeChannel) {
-      const { WildArkEmbed } = await import('./utils/embedBuilder.js');
-      const embed = WildArkEmbed.welcome(member);
-      await welcomeChannel.send({ embeds: [embed] });
-      logger.info(`Üdvözlés küldve: ${member.user.tag}`);
-    }
+    const { handleWelcome } = await import('./modules/welcomeSystem.js');
+    await handleWelcome(member);
   } catch (error) {
     logger.error('Hiba a welcome rendszerben:', error);
   }
