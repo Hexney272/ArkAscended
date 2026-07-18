@@ -10,12 +10,15 @@ Ez a repository tartalmazza az **ARK: Survival Ascended PvE x50** szerver teljes
 
 ## 🎮 Szerver Jellemzők
 
+- **IP Cím:** `31.214.216.164:5040`
 - **Térkép:** Ragnarok
 - **Mód:** PvE (Player vs Environment)
 - **Max Wild Dino Szint:** 900
 - **Rates:** x50 (XP, Taming, Harvesting, Breeding)
 - **Player Stats:** 2-5x szorzók (Health, Stamina, Weight, Damage)
-- **Modok:** 35 mod telepítve
+- **Maximum Játékosok:** 20
+- **RCON Port:** 11040
+- **Modok:** 32 mod telepítve
 
 ### Főbb Modok:
 - GameServerApp.com Integration (Crossplay)
