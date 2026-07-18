@@ -24,6 +24,7 @@ import { WildArkEmbed } from '../utils/embedBuilder.js';
 import logger from '../utils/logger.js';
 
 // Az élő státusz embed üzenet-referenciája (frissítéshez kell)
+let statusChannel = null;
 let statusMessage = null;
 let refreshInterval = null;
 
@@ -170,6 +171,7 @@ export async function setupServerMonitor(guild) {
       logger.success('✅ Szerver státusz panel létrehozva.');
     }
 
+    statusChannel = channel;
     startAutoRefresh();
     return statusMessage;
 
@@ -199,7 +201,24 @@ function startAutoRefresh() {
       const embed = buildStatusEmbed(result);
       await statusMessage.edit({ embeds: [embed] });
     } catch (error) {
-      logger.error('Hiba az automatikus státusz frissítés során:', error);
+      // Discord API 10008 = "Unknown Message" - valaki törölte a
+      // panel-üzenetet Discord-on. Ez korábban örökre megismétlődő
+      // hibát okozott minden percben, mert semmi nem hozott létre
+      // helyette új üzenetet. Most self-healing: ha törölték,
+      // létrehozunk egy friss panel-üzenetet a helyén.
+      if (error.code === 10008 && statusChannel) {
+        logger.warn('⚠️ A státusz üzenetet törölték - új panel létrehozása...');
+        try {
+          const result = await queryServer();
+          const embed = buildStatusEmbed(result);
+          statusMessage = await statusChannel.send({ embeds: [embed] });
+          logger.success('✅ Új szerver státusz panel létrehozva a törölt helyett.');
+        } catch (recreateError) {
+          logger.error('Nem sikerült újra létrehozni a státusz panelt:', recreateError);
+        }
+      } else {
+        logger.error('Hiba az automatikus státusz frissítés során:', error);
+      }
     }
   }, intervalMs);
 
