@@ -13,6 +13,15 @@ import { ticketCommand } from './commands/ticket.js';
 import { adminCommands } from './commands/admin.js';
 import { giveawayCommand } from './commands/giveaway.js';
 import { suggestCommand } from './commands/suggest.js';
+import { warnCommands } from './commands/warn.js';
+import { profileCommands } from './commands/profile.js';
+import { eventCommand } from './commands/event.js';
+import { embedCommand } from './commands/embed.js';
+import { funCommands } from './commands/fun.js';
+import breedCommand from './commands/ark.js';
+import { arkCommands } from './commands/ark2.js';
+import { pollCommand } from './commands/poll.js';
+import { remindCommand } from './commands/remind.js';
 
 config();
 
@@ -29,7 +38,11 @@ const client = new Client({
 
 // Register commands
 client.commands = new Collection();
-const allCommands = [setupCommand, ticketCommand, ...adminCommands, giveawayCommand, suggestCommand];
+const allCommands = [
+  setupCommand, ticketCommand, ...adminCommands, giveawayCommand, suggestCommand,
+  ...warnCommands, ...profileCommands, eventCommand, embedCommand,
+  ...funCommands, breedCommand, ...arkCommands, pollCommand, remindCommand,
+];
 allCommands.forEach(cmd => client.commands.set(cmd.data.name, cmd));
 
 // Ready

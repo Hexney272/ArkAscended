@@ -74,9 +74,23 @@ async function announceLevelUp(message, level) {
 }
 
 /**
- * Get user stats (for /level command if you add it later)
+ * Get user stats (for /profile command)
  */
 export function getStats(guildId, userId) {
   const key = getKey(guildId, userId);
   return userData.get(key) || { xp: 0, level: 0, lastMessage: 0 };
+}
+
+/**
+ * Get all users with stats in a guild (for /leaderboard)
+ */
+export function getAllStats(guildId) {
+  const results = [];
+  for (const [key, data] of userData.entries()) {
+    if (key.startsWith(`${guildId}_`)) {
+      const userId = key.replace(`${guildId}_`, '');
+      results.push({ userId, ...data });
+    }
+  }
+  return results;
 }

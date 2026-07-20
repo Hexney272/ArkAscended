@@ -56,6 +56,11 @@ export const setupCommand = {
       await setupTicketPanel(guild);
       steps.push('✅ Ticket system');
 
+      // Step 7: Commands info panel
+      await updateProgress(interaction, '📋 Posting commands info...');
+      await postCommandsPanel(guild);
+      steps.push('✅ Commands panel');
+
       // Done
       const embed = new EmbedBuilder()
         .setColor(COLORS.SUCCESS)
@@ -123,6 +128,30 @@ async function deleteAllChannels(guild) {
   }
 
   log.success(`Deleted ${deleted} channels/categories`);
+}
+
+async function postCommandsPanel(guild) {
+  const channel = guild.channels.cache.find(c => c.name === '📢-announcements');
+  if (!channel) return;
+
+  const recent = await channel.messages.fetch({ limit: 10 });
+  if (recent.find(m => m.author.id === guild.client.user.id && m.embeds[0]?.title === '📋 Bot Commands')) return;
+
+  const embed = new EmbedBuilder()
+    .setColor(COLORS.PRIMARY)
+    .setTitle('📋 Bot Commands')
+    .setDescription('Here are all the commands you can use:')
+    .addFields(
+      { name: '🎫 Support', value: '`/ticket` — Open a support ticket' },
+      { name: '🦖 ARK', value: '`/breed` — Breeding times (x50)\n`/spawn` — Dino spawn map\n`/boss` — Boss fight guide\n`/dino` — Dino info + taming link' },
+      { name: '📊 Community', value: '`/profile` — View your profile card\n`/leaderboard` — Top 10 active members\n`/suggest` — Submit a suggestion\n`/poll` — Create a poll' },
+      { name: '🎁 Events & Fun', value: '`/giveaway` — Enter giveaways via button\n`/remind` — Set a personal reminder\n`/roll` — Roll a dice\n`/8ball` — Ask the magic 8-ball\n`/coinflip` — Flip a coin' },
+      { name: '🎭 Roles', value: 'React in #🎭-pick-roles to get your roles!' },
+    )
+    .setFooter({ text: 'WildArk Bot • Use / to see all commands' })
+    .setTimestamp();
+
+  await channel.send({ embeds: [embed] });
 }
 
 async function postRules(guild) {
