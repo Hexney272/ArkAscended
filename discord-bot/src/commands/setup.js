@@ -22,8 +22,9 @@ export const setupCommand = {
 
     try {
       // Step 0: Delete all existing channels & categories (clean slate)
+      // Keep the channel where /setup was run so editReply still works
       await updateProgress(interaction, '🗑️ Removing old channels...');
-      await deleteAllChannels(guild);
+      await deleteAllChannels(guild, interaction.channelId);
       steps.push('✅ Old channels removed');
 
       // Step 1: Roles
@@ -71,6 +72,14 @@ export const setupCommand = {
       await interaction.editReply({ embeds: [embed] });
       log.success('Server setup completed successfully');
 
+      // Now safe to delete the old command channel (reply already sent)
+      try {
+        const oldChannel = guild.channels.cache.get(interaction.channelId);
+        if (oldChannel) await oldChannel.delete('WildArk /setup - old channel cleanup');
+      } catch (e) {
+        // May already be gone or was one of the new channels - ignore
+      }
+
     } catch (error) {
       log.error('Setup error:', error);
       const embed = new EmbedBuilder()
@@ -93,24 +102,26 @@ async function updateProgress(interaction, message) {
 
 /**
  * Delete all channels and categories (clean slate before rebuild).
- * Keeps ONLY the system channel if one is set (Discord requires at
- * least one channel to exist on a server).
+ * Keeps:
+ * - The system channel (Discord requires at least one)
+ * - The channel where /setup was invoked (so editReply still works)
  */
-async function deleteAllChannels(guild) {
+async function deleteAllChannels(guild, keepChannelId) {
   const systemChannelId = guild.systemChannelId;
-  const channels = guild.channels.cache.filter(c => c.id !== systemChannelId);
+  const channels = guild.channels.cache.filter(
+    c => c.id !== systemChannelId && c.id !== keepChannelId
+  );
 
   let deleted = 0;
 
-  // Delete non-category channels first (Discord won't let you delete
-  // a category that still has children)
-  const nonCategories = channels.filter(c => c.type !== 4); // 4 = GuildCategory
+  // Delete non-category channels first
+  const nonCategories = channels.filter(c => c.type !== 4);
   for (const [, ch] of nonCategories) {
     try {
       await ch.delete('WildArk /setup - clean slate');
       deleted++;
     } catch (e) {
-      log.warn(`  Could not delete #${ch.name}: ${e.message}`);
+      // Ignore errors (already deleted, no permission, etc.)
     }
     await delay(300);
   }
@@ -122,9 +133,15 @@ async function deleteAllChannels(guild) {
       await cat.delete('WildArk /setup - clean slate');
       deleted++;
     } catch (e) {
-      log.warn(`  Could not delete category ${cat.name}: ${e.message}`);
+      // Ignore
     }
     await delay(300);
+  }
+
+  // Finally delete the command channel (it will be recreated by builder)
+  if (keepChannelId) {
+    // DON'T delete here - the caller does it AFTER sending the final reply
+    // (otherwise editReply fails with Unknown Channel)
   }
 
   log.success(`Deleted ${deleted} channels/categories`);
