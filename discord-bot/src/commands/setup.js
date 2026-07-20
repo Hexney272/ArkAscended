@@ -21,6 +21,11 @@ export const setupCommand = {
     const steps = [];
 
     try {
+      // Step 0: Delete all existing channels & categories (clean slate)
+      await updateProgress(interaction, '🗑️ Removing old channels...');
+      await deleteAllChannels(guild);
+      steps.push('✅ Old channels removed');
+
       // Step 1: Roles
       await updateProgress(interaction, '🎨 Creating roles...');
       const roles = await buildRoles(guild);
@@ -81,6 +86,45 @@ async function updateProgress(interaction, message) {
   await interaction.editReply({ embeds: [embed] }).catch(() => {});
 }
 
+/**
+ * Delete all channels and categories (clean slate before rebuild).
+ * Keeps ONLY the system channel if one is set (Discord requires at
+ * least one channel to exist on a server).
+ */
+async function deleteAllChannels(guild) {
+  const systemChannelId = guild.systemChannelId;
+  const channels = guild.channels.cache.filter(c => c.id !== systemChannelId);
+
+  let deleted = 0;
+
+  // Delete non-category channels first (Discord won't let you delete
+  // a category that still has children)
+  const nonCategories = channels.filter(c => c.type !== 4); // 4 = GuildCategory
+  for (const [, ch] of nonCategories) {
+    try {
+      await ch.delete('WildArk /setup - clean slate');
+      deleted++;
+    } catch (e) {
+      log.warn(`  Could not delete #${ch.name}: ${e.message}`);
+    }
+    await delay(300);
+  }
+
+  // Then delete categories
+  const categories = channels.filter(c => c.type === 4);
+  for (const [, cat] of categories) {
+    try {
+      await cat.delete('WildArk /setup - clean slate');
+      deleted++;
+    } catch (e) {
+      log.warn(`  Could not delete category ${cat.name}: ${e.message}`);
+    }
+    await delay(300);
+  }
+
+  log.success(`Deleted ${deleted} channels/categories`);
+}
+
 async function postRules(guild) {
   const channel = guild.channels.cache.find(c => c.name === '📜-rules');
   if (!channel) return;
@@ -114,6 +158,10 @@ async function postRules(guild) {
     .setTimestamp();
 
   await channel.send({ embeds: [embed] });
+}
+
+function delay(ms) {
+  return new Promise(r => setTimeout(r, ms));
 }
 
 export default setupCommand;
